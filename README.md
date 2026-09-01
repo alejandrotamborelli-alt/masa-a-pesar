@@ -36,6 +36,27 @@ con pureza P (%):  m_a_pesar = m / (P/100)      m_puro = m_pesada · (P/100)
 
 Abrir `masa-a-pesar.html` en cualquier navegador. Funciona sin conexión.
 
+## Publicación (GitHub Pages)
+
+El repo se publica solo con GitHub Pages desde la rama `main`, carpeta raíz:
+
+- App: `https://alejandrotamborelli-alt.github.io/masa-a-pesar/masa-a-pesar.html`
+
+Cada `push` a `main` actualiza el sitio en ~1 minuto.
+
+### App instalable / offline
+
+`manifest.webmanifest` + `sw.js` (service worker) hacen que, al abrirla una vez
+desde ese enlace en el iPad y usar *Compartir → Agregar a pantalla de inicio*,
+quede como una app con ícono y funcione sin internet.
+
+**Al publicar un cambio hay que subir `VERSION` en `sw.js`** (`v1` → `v2` → …).
+Ese número es lo único que le avisa al dispositivo que debe descargar la versión
+nueva; el service worker cachea con estrategia *cache-first*.
+
+Íconos en `icons/` y `apple-touch-icon.png` generados con
+`tools/gen-icons.ps1` (System.Drawing, sin dependencias externas).
+
 ## Notas
 
 Los cálculos asumen reactivo 100 % puro y anhidro. Ajustar por pureza del

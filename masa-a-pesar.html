@@ -1,7 +1,17 @@
 <title>Masa a pesar</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,560;9..144,620&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#9c5a1c">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Masa a pesar">
 
 <style>
   :root{
@@ -500,4 +510,14 @@
   applyMode();
   calc();
 })();
+</script>
+
+<script>
+  // Modo offline: solo corre si la página se sirve por http(s) (GitHub Pages),
+  // no cuando se abre como archivo suelto ni dentro del visor de Artifacts.
+  if ("serviceWorker" in navigator && location.protocol.indexOf("http") === 0) {
+    window.addEventListener("load", function () {
+      navigator.serviceWorker.register("sw.js").catch(function () {});
+    });
+  }
 </script>
