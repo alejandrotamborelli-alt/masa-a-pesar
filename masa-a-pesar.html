@@ -1,0 +1,475 @@
+<title>Masa a pesar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,560;9..144,620&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+
+<style>
+  :root{
+    --bg:#f2efe9;
+    --surface:#fffdf9;
+    --surface-2:#f7f3ec;
+    --ink:#221f19;
+    --muted:#6f685b;
+    --line:#e3ddd0;
+    --line-strong:#d3ccba;
+    --accent:#9c5a1c;
+    --accent-strong:#7f4713;
+    --accent-tint:#f0e4d5;
+    --danger:#a83a2c;
+    --focus:#2f6f9e;
+    --on-accent:#fff;
+    --result-bg:rgba(42,140,200,.10);
+    --result-border:rgba(42,140,200,.28);
+    --chevron:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none' stroke='%236f685b' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M1 1.5 6 6.5 11 1.5'/></svg>");
+    --shadow:24px 24px 60px -32px rgba(60,45,20,.35);
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --bg:#1a1815;
+      --surface:#231f1a;
+      --surface-2:#2b261f;
+      --ink:#ece6da;
+      --muted:#a79d8b;
+      --line:#38322a;
+      --line-strong:#4a4237;
+      --accent:#e0964a;
+      --accent-strong:#eaa863;
+      --accent-tint:#33291d;
+      --danger:#e0765f;
+      --focus:#7fb5d8;
+      --on-accent:#231f1a;
+      --result-bg:rgba(120,190,235,.13);
+      --result-border:rgba(120,190,235,.26);
+      --chevron:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none' stroke='%23a79d8b' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M1 1.5 6 6.5 11 1.5'/></svg>");
+      --shadow:24px 24px 60px -32px rgba(0,0,0,.55);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#1a1815;
+    --surface:#231f1a;
+    --surface-2:#2b261f;
+    --ink:#ece6da;
+    --muted:#a79d8b;
+    --line:#38322a;
+    --line-strong:#4a4237;
+    --accent:#e0964a;
+    --accent-strong:#eaa863;
+    --accent-tint:#33291d;
+    --danger:#e0765f;
+    --focus:#7fb5d8;
+    --on-accent:#231f1a;
+    --result-bg:rgba(120,190,235,.13);
+    --result-border:rgba(120,190,235,.26);
+    --chevron:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none' stroke='%23a79d8b' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M1 1.5 6 6.5 11 1.5'/></svg>");
+    --shadow:24px 24px 60px -32px rgba(0,0,0,.55);
+  }
+
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    min-height:100vh;
+    padding:clamp(14px,4vw,48px);
+  }
+
+  .sheet{
+    width:100%;
+    max-width:540px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:14px;
+    box-shadow:var(--shadow);
+  }
+
+  header{
+    padding:22px clamp(20px,5vw,34px) 18px;
+    border-bottom:1px solid var(--line);
+    display:flex;
+    gap:14px;
+    align-items:flex-start;
+  }
+  .mark{
+    flex:none;
+    width:40px;height:40px;
+    color:var(--accent);
+    margin-top:2px;
+  }
+  .mark svg{width:100%;height:100%;display:block}
+  h1{
+    margin:0;
+    font-family:"Fraunces","Times New Roman",serif;
+    font-weight:560;
+    font-size:clamp(1.5rem,5vw,1.9rem);
+    letter-spacing:-.01em;
+    line-height:1.1;
+    text-wrap:balance;
+  }
+  .sub{
+    margin:.35rem 0 0;
+    color:var(--muted);
+    font-size:.9rem;
+  }
+
+  form{padding:clamp(18px,5vw,30px);display:flex;flex-direction:column;gap:16px}
+  fieldset{margin:0;padding:0;border:0;min-width:0}
+
+  .field{display:flex;flex-direction:column;gap:7px}
+  label,.legend{
+    font-size:.72rem;
+    font-weight:600;
+    letter-spacing:.09em;
+    text-transform:uppercase;
+    color:var(--muted);
+  }
+  .hint{font-size:.78rem;color:var(--muted);letter-spacing:0;text-transform:none;font-weight:400}
+
+  .control{
+    display:flex;
+    border:1px solid var(--line-strong);
+    border-radius:9px;
+    background:var(--surface-2);
+    overflow:hidden;
+    transition:border-color .15s,box-shadow .15s;
+  }
+  .control:focus-within{
+    border-color:var(--focus);
+    box-shadow:0 0 0 3px color-mix(in srgb,var(--focus) 26%,transparent);
+  }
+  .control input{
+    flex:1;
+    min-width:0;
+    border:0;
+    background:transparent;
+    color:var(--ink);
+    font:inherit;
+    font-size:1.05rem;
+    font-variant-numeric:tabular-nums;
+    padding:12px 14px;
+  }
+  .control input:focus{outline:none}
+  .control .unit-static{
+    flex:none;
+    display:flex;align-items:center;
+    padding:0 14px;
+    font-size:.9rem;
+    color:var(--muted);
+    border-left:1px solid var(--line-strong);
+    background:color-mix(in srgb,var(--line) 30%,transparent);
+  }
+
+  .control .unit-select{
+    flex:none;
+    appearance:none;
+    -webkit-appearance:none;
+    border:0;
+    border-left:1px solid var(--line-strong);
+    border-radius:0;
+    background-color:color-mix(in srgb,var(--line) 30%,transparent);
+    background-image:var(--chevron);
+    background-repeat:no-repeat;
+    background-position:right 12px center;
+    color:var(--ink);
+    font:inherit;
+    font-size:.95rem;
+    padding:0 34px 0 14px;
+    cursor:pointer;
+  }
+  .control .unit-select:focus{outline:none}
+  .control .unit-select option{color:var(--ink);background:var(--surface)}
+  .control .unit-select.mode-select{
+    flex:1;
+    border-left:0;
+    background-color:transparent;
+    font-size:1.05rem;
+    padding:12px 34px 12px 14px;
+  }
+
+  [hidden]{display:none!important}
+
+  .result{
+    background:var(--result-bg);
+    border:1px solid var(--result-border);
+    border-radius:11px;
+    padding:16px clamp(16px,4vw,22px) 18px;
+  }
+  .result .cap{
+    font-size:.72rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;
+    color:var(--muted);
+  }
+  .value{
+    margin:.3rem 0 0;
+    font-family:"Fraunces","Times New Roman",serif;
+    font-weight:620;
+    font-size:clamp(1.9rem,8vw,2.5rem);
+    line-height:1.05;
+    letter-spacing:-.02em;
+    font-variant-numeric:tabular-nums;
+    color:var(--accent-strong);
+  }
+  .value .u{font-size:.5em;font-weight:560;color:var(--muted);margin-left:.2em}
+  .value.placeholder{color:var(--muted);font-size:clamp(1.1rem,4vw,1.35rem);font-weight:560}
+  .detail{
+    margin-top:12px;
+    padding-top:12px;
+    border-top:1px dashed var(--line-strong);
+    font-family:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+    font-size:.82rem;
+    color:var(--muted);
+    line-height:1.7;
+    word-break:break-word;
+  }
+  .detail div + div{margin-top:2px}
+  .detail.err{color:var(--danger);font-family:"IBM Plex Sans",sans-serif}
+
+  footer{
+    padding:14px clamp(20px,5vw,34px) 20px;
+    border-top:1px solid var(--line);
+    font-size:.76rem;
+    color:var(--muted);
+  }
+
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="sheet">
+  <header>
+    <span class="mark" aria-hidden="true">
+      <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 5v28"/>
+        <path d="M9 33h22"/>
+        <path d="M6 12h28"/>
+        <circle cx="20" cy="8" r="2.4" fill="currentColor" stroke="none"/>
+        <path d="M6 12l-4 9a5 5 0 0 0 8 0z"/>
+        <path d="M34 12l-4 9a5 5 0 0 0 8 0z"/>
+      </svg>
+    </span>
+    <div>
+      <h1>Masa a pesar</h1>
+      <p class="sub">Peso molecular y concentraci&oacute;n final; complet&aacute;s la masa o el volumen y te devuelve el otro. Separador decimal: coma o punto.</p>
+    </div>
+  </header>
+
+  <form id="calc" autocomplete="off" novalidate>
+    <fieldset class="field">
+      <span class="legend" id="mode-legend">Qu&eacute; quer&eacute;s calcular</span>
+      <div class="control">
+        <select id="mode" class="unit-select mode-select" aria-labelledby="mode-legend">
+          <option value="mass" selected>Masa a pesar</option>
+          <option value="volume">Volumen necesario</option>
+        </select>
+      </div>
+    </fieldset>
+
+    <div class="field">
+      <label for="mw">Peso molecular</label>
+      <div class="control">
+        <input id="mw" inputmode="decimal" placeholder="p. ej. 58,44" aria-describedby="mw-hint">
+        <span class="unit-static">g/mol</span>
+      </div>
+      <span class="hint" id="mw-hint">No se usa cuando la concentraci&oacute;n est&aacute; en ppm.</span>
+    </div>
+
+    <fieldset class="field">
+      <span class="legend" id="conc-legend">Concentraci&oacute;n final</span>
+      <div class="control" role="group" aria-labelledby="conc-legend">
+        <input id="conc" inputmode="decimal" placeholder="p. ej. 10">
+        <select id="conc-unit" class="unit-select" aria-label="Unidad de concentraci&oacute;n">
+          <option value="M">M</option>
+          <option value="mM" selected>mM</option>
+          <option value="uM">&micro;M</option>
+          <option value="ppm">ppm</option>
+        </select>
+      </div>
+      <span class="hint" id="conc-hint">mM = milimolar, &micro;M = micromolar. ppm se interpreta como mg/L (soluci&oacute;n acuosa).</span>
+    </fieldset>
+
+    <fieldset class="field" id="vol-field">
+      <span class="legend" id="vol-legend">Volumen final</span>
+      <div class="control" role="group" aria-labelledby="vol-legend">
+        <input id="vol" inputmode="decimal" placeholder="p. ej. 250">
+        <select id="vol-unit" class="unit-select" aria-label="Unidad de volumen">
+          <option value="uL">&micro;L</option>
+          <option value="mL" selected>mL</option>
+          <option value="L">L</option>
+        </select>
+      </div>
+    </fieldset>
+
+    <fieldset class="field" id="mass-field" hidden>
+      <span class="legend" id="mass-legend">Masa que pesaste</span>
+      <div class="control" role="group" aria-labelledby="mass-legend">
+        <input id="mass" inputmode="decimal" placeholder="p. ej. 25">
+        <select id="mass-unit" class="unit-select" aria-label="Unidad de masa">
+          <option value="ug">&micro;g</option>
+          <option value="mg" selected>mg</option>
+          <option value="g">g</option>
+        </select>
+      </div>
+    </fieldset>
+
+    <div class="result">
+      <span class="cap" id="result-cap">Deb&eacute;s pesar</span>
+      <p class="value placeholder" id="value" aria-live="polite">Complet&aacute; los campos</p>
+      <div class="detail" id="detail" aria-live="polite"></div>
+    </div>
+  </form>
+
+  <footer>
+    <span id="footer-formula">m = PM &middot; C &middot; V &nbsp;&mdash;&nbsp; para ppm: m = C(mg/L) &middot; V(L)</span>. Pens&aacute; en la pureza del reactivo y en sales hidratadas.
+  </footer>
+</div>
+
+<script>
+(function(){
+  var $ = function(id){ return document.getElementById(id); };
+  var modeEl = $("mode");
+  var mwEl = $("mw"), concEl = $("conc"), volEl = $("vol"), massEl = $("mass");
+  var concUnitEl = $("conc-unit"), volUnitEl = $("vol-unit"), massUnitEl = $("mass-unit");
+  var volField = $("vol-field"), massField = $("mass-field");
+  var valueEl = $("value"), detailEl = $("detail"), resultCap = $("result-cap");
+  var footerFormula = $("footer-formula");
+
+  var concUnit = concUnitEl.value;
+  var volUnit  = volUnitEl.value;
+  var massUnit = massUnitEl.value;
+
+  var VOL_TO_L   = { L:1, mL:1e-3, uL:1e-6 };
+  var CONC_TO_M  = { M:1, mM:1e-3, uM:1e-6 };
+  var MASS_TO_G  = { g:1, mg:1e-3, ug:1e-6 };
+  var UNIT_LABEL = { M:"M", mM:"mM", uM:"µM", ppm:"ppm", L:"L", mL:"mL", uL:"µL", g:"g", mg:"mg", ug:"µg" };
+
+  function num(el){
+    if(!el.value) return NaN;
+    return parseFloat(el.value.replace(",", ".").trim());
+  }
+
+  function fmt(n, p){
+    if(n === 0) return "0";
+    if(!isFinite(n)) return "—";
+    var abs = Math.abs(n);
+    if(abs < 1e-4 || abs >= 1e7) return n.toExponential(Math.max(0,(p||4)-1));
+    var r = Number(n.toPrecision(p || 4));
+    return r.toLocaleString("es-ES", { maximumFractionDigits: 12 });
+  }
+
+  function scaleMass(grams){
+    var abs = Math.abs(grams), val, unit;
+    if(abs >= 1){ val = grams; unit = "g"; }
+    else if(abs >= 1e-3){ val = grams * 1e3; unit = "mg"; }
+    else if(abs >= 1e-6){ val = grams * 1e6; unit = "µg"; }
+    else { val = grams * 1e9; unit = "ng"; }
+    return { val: val, unit: unit };
+  }
+
+  function scaleVol(liters){
+    var abs = Math.abs(liters), val, unit;
+    if(abs >= 1){ val = liters; unit = "L"; }
+    else if(abs >= 1e-3){ val = liters * 1e3; unit = "mL"; }
+    else { val = liters * 1e6; unit = "µL"; }
+    return { val: val, unit: unit };
+  }
+
+  function placeholder(msg){
+    valueEl.className = "value placeholder";
+    valueEl.textContent = msg;
+    detailEl.className = "detail";
+    detailEl.textContent = "";
+  }
+
+  function error(msg){
+    valueEl.className = "value placeholder";
+    valueEl.textContent = "—";
+    detailEl.className = "detail err";
+    detailEl.textContent = msg;
+  }
+
+  function show(scaled, rawStr, lines){
+    valueEl.className = "value";
+    valueEl.innerHTML = fmt(scaled.val) + '<span class="u">' + scaled.unit + "</span>";
+    detailEl.className = "detail";
+    if(rawStr) lines.unshift(rawStr);
+    detailEl.innerHTML = lines.map(function(l){ return "<div>" + l + "</div>"; }).join("");
+  }
+
+  function applyMode(){
+    var solveVolume = modeEl.value === "volume";
+    volField.hidden = solveVolume;
+    massField.hidden = !solveVolume;
+    resultCap.textContent = solveVolume ? "Volumen necesario" : "Debés pesar";
+    footerFormula.textContent = solveVolume
+      ? "V = m / (PM · C)  —  para ppm: V = m / C(mg/L)"
+      : "m = PM · C · V  —  para ppm: m = C(mg/L) · V(L)";
+  }
+
+  function calc(){
+    var solveVolume = modeEl.value === "volume";
+    var mw = num(mwEl), c = num(concEl);
+    var isPpm = concUnit === "ppm";
+    var needMw = !isPpm;
+
+    if(isNaN(c) || (needMw && isNaN(mw))){ placeholder("Completá los campos"); return; }
+    if(c <= 0 || (needMw && mw <= 0)){ error("Los valores deben ser mayores que cero."); return; }
+
+    var molL = isPpm ? null : c * CONC_TO_M[concUnit];
+    var lines = [];
+    if(!isPpm && concUnit !== "M"){
+      lines.push("C = " + fmt(c) + " " + UNIT_LABEL[concUnit] + " = " + fmt(molL, 6) + " mol/L");
+    }
+
+    if(!solveVolume){
+      // --- despejar la masa ---
+      var v = num(volEl);
+      if(isNaN(v)){ placeholder("Completá los campos"); return; }
+      if(v <= 0){ error("Los valores deben ser mayores que cero."); return; }
+      var vL = v * (VOL_TO_L[volUnit] || 1e-3);
+      var grams;
+      if(isPpm){
+        grams = c * vL / 1000;
+        lines.push("m = C · V = " + fmt(c) + " mg/L · " + fmt(vL) + " L = " + fmt(c * vL) + " mg");
+        if(!isNaN(mw) && mw > 0) lines.push("≈ " + fmt(c / mw) + " mM  (usando PM = " + fmt(mw) + " g/mol)");
+      } else {
+        grams = mw * molL * vL;
+        lines.push("m = PM · C · V = " + fmt(mw) + " g/mol · " + fmt(molL, 6) + " mol/L · " + fmt(vL) + " L = " + fmt(grams) + " g");
+        lines.push("Cantidad de sustancia: n = " + fmt(molL * vL * 1000) + " mmol");
+      }
+      var s = scaleMass(grams);
+      show(s, s.unit !== "g" ? ("= " + fmt(grams) + " g") : null, lines);
+    } else {
+      // --- despejar el volumen ---
+      var m = num(massEl);
+      if(isNaN(m)){ placeholder("Completá los campos"); return; }
+      if(m <= 0){ error("Los valores deben ser mayores que cero."); return; }
+      var massG = m * MASS_TO_G[massUnit];
+      var vL2;
+      if(isPpm){
+        vL2 = massG * 1000 / c;
+        lines.push("V = m / C = " + fmt(massG * 1000) + " mg / " + fmt(c) + " mg/L = " + fmt(vL2) + " L");
+      } else {
+        vL2 = massG / (mw * molL);
+        lines.push("V = m / (PM · C) = " + fmt(massG) + " g / (" + fmt(mw) + " g/mol · " + fmt(molL, 6) + " mol/L) = " + fmt(vL2) + " L");
+        lines.push("Cantidad de sustancia: n = " + fmt(massG / mw * 1000) + " mmol");
+      }
+      var sv = scaleVol(vL2);
+      lines.push("Disolvé la masa y enrasá hasta este volumen final.");
+      show(sv, sv.unit !== "L" ? ("= " + fmt(vL2) + " L") : null, lines);
+    }
+  }
+
+  modeEl.addEventListener("change", function(){ applyMode(); calc(); });
+  concUnitEl.addEventListener("change", function(){ concUnit = concUnitEl.value; calc(); });
+  volUnitEl.addEventListener("change", function(){ volUnit = volUnitEl.value; calc(); });
+  massUnitEl.addEventListener("change", function(){ massUnit = massUnitEl.value; calc(); });
+  [mwEl, concEl, volEl, massEl].forEach(function(el){ el.addEventListener("input", calc); });
+
+  applyMode();
+  calc();
+})();
+</script>
