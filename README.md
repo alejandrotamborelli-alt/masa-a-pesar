@@ -34,13 +34,13 @@ con pureza P (%):  m_a_pesar = m / (P/100)      m_puro = m_pesada · (P/100)
 
 ## Uso
 
-Abrir `masa-a-pesar.html` en cualquier navegador. Funciona sin conexión.
+Abrir `index.html` en cualquier navegador. Funciona sin conexión.
 
 ## Publicación (GitHub Pages)
 
 El repo se publica solo con GitHub Pages desde la rama `main`, carpeta raíz:
 
-- App: `https://alejandrotamborelli-alt.github.io/masa-a-pesar/masa-a-pesar.html`
+- App: `https://alejandrotamborelli-alt.github.io/masa-a-pesar/`
 
 Cada `push` a `main` actualiza el sitio en ~1 minuto.
 

@@ -4,11 +4,12 @@
  * Ese número es lo único que le avisa al navegador que hay una versión nueva
  * para descargar. Si no cambia, el iPad sigue mostrando la copia vieja.
  */
-const VERSION = 'v1';
+const VERSION = 'v2';
 const CACHE = 'masa-a-pesar-' + VERSION;
 
 const CORE = [
-  './masa-a-pesar.html',
+  './',
+  './index.html',
   './manifest.webmanifest',
   './icons/icon-192.png',
   './icons/icon-512.png',
@@ -62,7 +63,7 @@ self.addEventListener('fetch', (event) => {
           caches.open(CACHE).then((cache) => cache.put(req, copy));
           return res;
         }).catch(() =>
-          req.mode === 'navigate' ? caches.match('./masa-a-pesar.html') : undefined
+          req.mode === 'navigate' ? caches.match('./index.html') : undefined
         )
       )
     );

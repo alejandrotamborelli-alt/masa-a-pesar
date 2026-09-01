@@ -3,7 +3,7 @@
   "short_name": "Masa a pesar",
   "description": "Calculadora de laboratorio: masa a pesar o volumen necesario para preparar soluciones.",
   "lang": "es",
-  "start_url": "./masa-a-pesar.html",
+  "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
