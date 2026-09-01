@@ -277,6 +277,15 @@
       <span class="hint" id="mw-hint">No se usa cuando la concentraci&oacute;n est&aacute; en ppm.</span>
     </div>
 
+    <div class="field">
+      <label for="pur">Pureza del reactivo</label>
+      <div class="control">
+        <input id="pur" inputmode="decimal" placeholder="100" aria-describedby="pur-hint">
+        <span class="unit-static">%</span>
+      </div>
+      <span class="hint" id="pur-hint">Opcional. Dejala vac&iacute;a o en 100 si el reactivo es puro.</span>
+    </div>
+
     <fieldset class="field">
       <span class="legend" id="conc-legend">Concentraci&oacute;n final</span>
       <div class="control" role="group" aria-labelledby="conc-legend">
@@ -323,7 +332,7 @@
   </form>
 
   <footer>
-    <span id="footer-formula">m = PM &middot; C &middot; V &nbsp;&mdash;&nbsp; para ppm: m = C(mg/L) &middot; V(L)</span>. Pens&aacute; en la pureza del reactivo y en sales hidratadas.
+    <span id="footer-formula">m = PM &middot; C &middot; V &nbsp;&mdash;&nbsp; para ppm: m = C(mg/L) &middot; V(L)</span>. La pureza corrige la masa a pesar; acord&aacute;te tambi&eacute;n de las sales hidratadas.
   </footer>
 </div>
 
@@ -331,7 +340,7 @@
 (function(){
   var $ = function(id){ return document.getElementById(id); };
   var modeEl = $("mode");
-  var mwEl = $("mw"), concEl = $("conc"), volEl = $("vol"), massEl = $("mass");
+  var mwEl = $("mw"), purEl = $("pur"), concEl = $("conc"), volEl = $("vol"), massEl = $("mass");
   var concUnitEl = $("conc-unit"), volUnitEl = $("vol-unit"), massUnitEl = $("mass-unit");
   var volField = $("vol-field"), massField = $("mass-field");
   var valueEl = $("value"), detailEl = $("detail"), resultCap = $("result-cap");
@@ -418,6 +427,14 @@
     if(isNaN(c) || (needMw && isNaN(mw))){ placeholder("Completá los campos"); return; }
     if(c <= 0 || (needMw && mw <= 0)){ error("Los valores deben ser mayores que cero."); return; }
 
+    var pur = num(purEl);
+    var purityFrac = 1;
+    if(!isNaN(pur)){
+      if(pur <= 0 || pur > 100){ error("La pureza debe estar entre 0 y 100 %."); return; }
+      purityFrac = pur / 100;
+    }
+    var corrige = purityFrac < 1;
+
     var molL = isPpm ? null : c * CONC_TO_M[concUnit];
     var lines = [];
     if(!isPpm && concUnit !== "M"){
@@ -430,16 +447,22 @@
       if(isNaN(v)){ placeholder("Completá los campos"); return; }
       if(v <= 0){ error("Los valores deben ser mayores que cero."); return; }
       var vL = v * (VOL_TO_L[volUnit] || 1e-3);
-      var grams;
+      var mLbl = corrige ? "m(puro)" : "m";
+      var gramsPure, nMmol = null;
       if(isPpm){
-        grams = c * vL / 1000;
-        lines.push("m = C · V = " + fmt(c) + " mg/L · " + fmt(vL) + " L = " + fmt(c * vL) + " mg");
+        gramsPure = c * vL / 1000;
+        lines.push(mLbl + " = C · V = " + fmt(c) + " mg/L · " + fmt(vL) + " L = " + fmt(c * vL) + " mg");
         if(!isNaN(mw) && mw > 0) lines.push("≈ " + fmt(c / mw) + " mM  (usando PM = " + fmt(mw) + " g/mol)");
       } else {
-        grams = mw * molL * vL;
-        lines.push("m = PM · C · V = " + fmt(mw) + " g/mol · " + fmt(molL, 6) + " mol/L · " + fmt(vL) + " L = " + fmt(grams) + " g");
-        lines.push("Cantidad de sustancia: n = " + fmt(molL * vL * 1000) + " mmol");
+        gramsPure = mw * molL * vL;
+        nMmol = molL * vL * 1000;
+        lines.push(mLbl + " = PM · C · V = " + fmt(mw) + " g/mol · " + fmt(molL, 6) + " mol/L · " + fmt(vL) + " L = " + fmt(gramsPure) + " g");
       }
+      var grams = gramsPure / purityFrac;
+      if(corrige){
+        lines.push("Pureza " + fmt(pur) + " % → m = " + fmt(gramsPure) + " g / " + fmt(purityFrac) + " = " + fmt(grams) + " g");
+      }
+      if(nMmol !== null) lines.push("Cantidad de sustancia: n = " + fmt(nMmol) + " mmol");
       var s = scaleMass(grams);
       show(s, s.unit !== "g" ? ("= " + fmt(grams) + " g") : null, lines);
     } else {
@@ -448,14 +471,19 @@
       if(isNaN(m)){ placeholder("Completá los campos"); return; }
       if(m <= 0){ error("Los valores deben ser mayores que cero."); return; }
       var massG = m * MASS_TO_G[massUnit];
+      var massPure = massG * purityFrac;
+      var mLbl2 = corrige ? "m(puro)" : "m";
+      if(corrige){
+        lines.push("Pureza " + fmt(pur) + " % → m(puro) = " + fmt(massG) + " g · " + fmt(purityFrac) + " = " + fmt(massPure) + " g");
+      }
       var vL2;
       if(isPpm){
-        vL2 = massG * 1000 / c;
-        lines.push("V = m / C = " + fmt(massG * 1000) + " mg / " + fmt(c) + " mg/L = " + fmt(vL2) + " L");
+        vL2 = massPure * 1000 / c;
+        lines.push("V = " + mLbl2 + " / C = " + fmt(massPure * 1000) + " mg / " + fmt(c) + " mg/L = " + fmt(vL2) + " L");
       } else {
-        vL2 = massG / (mw * molL);
-        lines.push("V = m / (PM · C) = " + fmt(massG) + " g / (" + fmt(mw) + " g/mol · " + fmt(molL, 6) + " mol/L) = " + fmt(vL2) + " L");
-        lines.push("Cantidad de sustancia: n = " + fmt(massG / mw * 1000) + " mmol");
+        vL2 = massPure / (mw * molL);
+        lines.push("V = " + mLbl2 + " / (PM · C) = " + fmt(massPure) + " g / (" + fmt(mw) + " g/mol · " + fmt(molL, 6) + " mol/L) = " + fmt(vL2) + " L");
+        lines.push("Cantidad de sustancia: n = " + fmt(massPure / mw * 1000) + " mmol");
       }
       var sv = scaleVol(vL2);
       lines.push("Disolvé la masa y enrasá hasta este volumen final.");
@@ -467,7 +495,7 @@
   concUnitEl.addEventListener("change", function(){ concUnit = concUnitEl.value; calc(); });
   volUnitEl.addEventListener("change", function(){ volUnit = volUnitEl.value; calc(); });
   massUnitEl.addEventListener("change", function(){ massUnit = massUnitEl.value; calc(); });
-  [mwEl, concEl, volEl, massEl].forEach(function(el){ el.addEventListener("input", calc); });
+  [mwEl, purEl, concEl, volEl, massEl].forEach(function(el){ el.addEventListener("input", calc); });
 
   applyMode();
   calc();

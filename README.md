@@ -9,6 +9,9 @@ A partir del **peso molecular** y la **concentración final** deseada, despeja l
 - **Masa a pesar** — dados concentración y volumen final, cuánto sólido pesar.
 - **Volumen necesario** — dada la masa que ya pesaste, a qué volumen final llevarla.
 
+Campo opcional de **pureza del reactivo (%)**: si es menor a 100, corrige la masa
+(hay que pesar más) o el volumen (rinde menos) según el modo.
+
 ### Unidades
 
 - Concentración: `M`, `mM`, `µM`, `ppm` (ppm interpretado como mg/L en solución acuosa).
@@ -25,6 +28,8 @@ El separador decimal puede ser coma o punto.
 ```
 m = PM · C · V              (para ppm: m = C[mg/L] · V[L])
 V = m / (PM · C)            (para ppm: V = m / C[mg/L])
+
+con pureza P (%):  m_a_pesar = m / (P/100)      m_puro = m_pesada · (P/100)
 ```
 
 ## Uso
