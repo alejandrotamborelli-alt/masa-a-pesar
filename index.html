@@ -68,11 +68,13 @@
     -webkit-user-select:none;user-select:none;
     filter:drop-shadow(0 0.15em 0.3em rgba(20,50,80,.25));
   }
-  .eq-frasco{ left:4%; top:28.5%; width:22%; }
-  .scene[data-mode="mass"]   .eq-mid  { left:40%; top:30.5%; width:20%; }  /* matraz (angosto) */
-  .scene[data-mode="mass"]   .eq-right{ left:67%; top:30.5%; width:20%; }  /* balanza */
-  .scene[data-mode="volume"] .eq-mid  { left:39%; top:30.5%; width:20%; }  /* balanza */
-  .scene[data-mode="volume"] .eq-right{ left:71%; top:29.5%; width:21%; }  /* matraz (angosto) */
+  /* Los tres comparten caja (mismo top y ancho) => arrancan y terminan a la
+     misma altura. Cada uno centrado sobre su píldora inferior. */
+  .eq-frasco{ left:5%;  top:28%; width:23%; }
+  .scene[data-mode="mass"]   .eq-mid  { left:39%; top:28%; width:23%; }  /* matraz sobre "Vol. final" */
+  .scene[data-mode="mass"]   .eq-right{ left:72%; top:28%; width:23%; }  /* balanza sobre "Pesar" */
+  .scene[data-mode="volume"] .eq-mid  { left:39%; top:28%; width:23%; }  /* balanza sobre "Pesaje" */
+  .scene[data-mode="volume"] .eq-right{ left:72%; top:28%; width:23%; }  /* matraz sobre "Volumen" */
 
   /* ---- Píldoras ---- */
   .pill{
@@ -158,9 +160,9 @@
   /* Fila inferior: dato (centro) + resultado (derecha, más corta).
      Centradas en vertical respecto al bloque PM+Pureza. Cambian de
      lugar y de rol según el modo. */
-  .scene[data-mode="mass"]   #pill-vol  { left:34%; top:75.5%; width:30%; }
+  .scene[data-mode="mass"]   #pill-vol  { left:36%; top:75.5%; width:29%; }
   .scene[data-mode="mass"]   #pill-mass { left:70%; top:75.5%; width:28%; }
-  .scene[data-mode="volume"] #pill-mass { left:34%; top:75.5%; width:30%; }
+  .scene[data-mode="volume"] #pill-mass { left:36%; top:75.5%; width:29%; }
   .scene[data-mode="volume"] #pill-vol  { left:70%; top:75.5%; width:28%; }
 
   .pill.is-result{
