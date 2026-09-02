@@ -50,8 +50,10 @@
     width:var(--u);
     height:calc(var(--u) / 1.044);
     font-size:calc(var(--u) * 0.037);
-    background:var(--scene-fallback) center/cover no-repeat;
-    background-image:url("assets/fondo.jpg");
+    background:
+      linear-gradient(rgba(255,255,255,.30), rgba(255,255,255,.30)),
+      url("assets/fondo.jpg") center/cover no-repeat,
+      var(--scene-fallback);
     border-radius:calc(var(--u) * 0.03);
     box-shadow:0 1.2vmin 4vmin -1vmin rgba(24,60,90,.45);
     overflow:hidden;
@@ -66,11 +68,11 @@
     -webkit-user-select:none;user-select:none;
     filter:drop-shadow(0 0.15em 0.3em rgba(20,50,80,.25));
   }
-  .eq-frasco{ left:0%;  top:29%; width:31%; }
-  .scene[data-mode="mass"]   .eq-mid  { left:38%; top:29%; width:23%; }  /* matraz */
-  .scene[data-mode="mass"]   .eq-right{ left:58%; top:33%; width:41%; }  /* balanza */
-  .scene[data-mode="volume"] .eq-mid  { left:32%; top:33%; width:36%; }  /* balanza */
-  .scene[data-mode="volume"] .eq-right{ left:68%; top:29%; width:24%; }  /* matraz */
+  .eq-frasco{ left:3%; top:25%; width:25%; }
+  .scene[data-mode="mass"]   .eq-mid  { left:36%; top:26%; width:27%; }  /* matraz (angosto) */
+  .scene[data-mode="mass"]   .eq-right{ left:64%; top:27%; width:28%; }  /* balanza */
+  .scene[data-mode="volume"] .eq-mid  { left:35%; top:27%; width:28%; }  /* balanza */
+  .scene[data-mode="volume"] .eq-right{ left:69%; top:26%; width:27%; }  /* matraz (angosto) */
 
   /* ---- Píldoras ---- */
   .pill{
@@ -98,7 +100,8 @@
   }
   .pill-input{
     flex:1 1 auto;
-    min-width:0;
+    min-width:2.4em;
+    width:100%;
     border:0;
     border-radius:999px;
     background:var(--field-bg);
@@ -107,7 +110,7 @@
     font-size:.62em;
     font-weight:600;
     text-align:center;
-    padding:.32em .5em;
+    padding:.32em .4em;
     font-variant-numeric:tabular-nums;
   }
   .pill-input:focus{ outline:.14em solid #ffd27a; outline-offset:.05em; }
@@ -122,8 +125,8 @@
     color:#fff;
     font-family:"Fredoka","Trebuchet MS",sans-serif;
     font-weight:600;
-    font-size:.56em;
-    padding:.3em 1.5em .3em .6em;
+    font-size:.55em;
+    padding:.3em 1.35em .3em .5em;
     cursor:pointer;
     background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='7' viewBox='0 0 10 7' fill='none' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M1 1.3 5 5.3 9 1.3'/></svg>");
     background-repeat:no-repeat;
@@ -147,16 +150,17 @@
   }
 
   /* Posiciones fijas */
-  #pill-compuesto{ left:2%;  top:14.5%; width:44%; }
-  #pill-conc{      left:53%; top:14.5%; width:45%; }
-  #pill-pm{        left:1.5%; top:70.5%; width:33%; }
-  #pill-pureza{    left:1.5%; top:81.5%; width:33%; }
+  #pill-compuesto{ left:2%;  top:14%; width:43%; }
+  #pill-conc{      left:54%; top:14%; width:44%; }
+  #pill-pm{        left:1.5%; top:69%; width:30%; }
+  #pill-pureza{    left:1.5%; top:81%; width:30%; }
 
-  /* Las dos que cambian de lugar y de rol según el modo */
-  .scene[data-mode="mass"]   #pill-vol  { left:31%;   top:78.5%; width:30.5%; }
-  .scene[data-mode="mass"]   #pill-mass { left:64.5%; top:78.5%; width:34%; }
-  .scene[data-mode="volume"] #pill-mass { left:31%;   top:78.5%; width:30.5%; }
-  .scene[data-mode="volume"] #pill-vol  { left:64.5%; top:78.5%; width:34%; }
+  /* Fila inferior: dato (centro) + resultado (derecha, más corta).
+     Cambian de lugar y de rol según el modo. */
+  .scene[data-mode="mass"]   #pill-vol  { left:34%; top:80%; width:30%; }
+  .scene[data-mode="mass"]   #pill-mass { left:70%; top:80%; width:28%; }
+  .scene[data-mode="volume"] #pill-mass { left:34%; top:80%; width:30%; }
+  .scene[data-mode="volume"] #pill-vol  { left:70%; top:80%; width:28%; }
 
   .pill.is-result{
     background:linear-gradient(180deg,var(--pill-blue-1),var(--pill-blue-2));
