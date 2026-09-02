@@ -1,6 +1,9 @@
 # Masa a pesar
 
-Calculadora de laboratorio (una sola página HTML, sin dependencias) para preparar soluciones.
+Calculadora de laboratorio (una sola página HTML, sin librerías) para preparar
+soluciones. Interfaz visual: escena con fondo químico y equipos de laboratorio,
+campos tipo "píldora" repartidos sobre la escena, que se achica para entrar en
+cualquier pantalla (pensada para iPad).
 
 ## Qué hace
 
@@ -9,17 +12,27 @@ A partir del **peso molecular** y la **concentración final** deseada, despeja l
 - **Masa a pesar** — dados concentración y volumen final, cuánto sólido pesar.
 - **Volumen necesario** — dada la masa que ya pesaste, a qué volumen final llevarla.
 
-Campo opcional de **pureza del reactivo (%)**: si es menor a 100, corrige la masa
-(hay que pesar más) o el volumen (rinde menos) según el modo.
+Se cambia de modo tocando el **título**. Los equipos (frasco / matraz / balanza)
+se reordenan según el modo.
 
-### Unidades
+- **Compuesto**: texto libre, solo de referencia (no entra en la cuenta; aparece en la pizarra).
+- **Pureza del reactivo (%)**: opcional; si es menor a 100 corrige la masa
+  (hay que pesar más) o el volumen (rinde menos) según el modo.
 
+### Unidades (todas con menú desplegable en la píldora)
+
+- Peso molecular: `g/mol`, `kg/mol`.
 - Concentración: `M`, `mM`, `µM`, `ppm` (ppm interpretado como mg/L en solución acuosa).
 - Volumen: `µL`, `mL`, `L`.
-- Masa (entrada en modo volumen): `µg`, `mg`, `g`.
+- Masa: `µg`, `mg`, `g`.
 
-El resultado se auto-escala (µg/mg/g o µL/mL/L) y el detalle muestra la fórmula
-con todos los valores y unidades sustituidos, más la cantidad de sustancia en mmol.
+El resultado se auto-escala (µg/mg/g o µL/mL/L). **Al tocar la píldora del
+resultado** se abre una pizarra con el detalle del cálculo (fórmula con valores y
+unidades + cantidad de sustancia en mmol) sobre el fondo desenfocado:
+
+- tocar la pizarra → copia el detalle **como imagen** al portapapeles (para pegar
+  en un documento); si el navegador no lo permite, la descarga como `.png`.
+- tocar fuera de la pizarra → vuelve a los datos.
 
 El separador decimal puede ser coma o punto.
 
@@ -56,6 +69,15 @@ nueva; el service worker cachea con estrategia *cache-first*.
 
 Íconos en `icons/` y `apple-touch-icon.png` generados con
 `tools/gen-icons.ps1` (System.Drawing, sin dependencias externas).
+
+## Imágenes de la escena
+
+- `assets/` contiene las versiones optimizadas que usa la app
+  (`fondo.jpg`, `frasco.png`, `matraz.png`, `balanza.png`, `pizarron.png`).
+- `assets/src/` guarda los originales sin comprimir (respaldo).
+- `tools/optimize-assets.ps1` regenera las optimizadas desde `src/`
+  (reescala + JPEG para el fondo; PowerShell + System.Drawing, sin dependencias).
+- Si se cambian imágenes, acordarse de subir `VERSION` en `sw.js`.
 
 ## Notas
 

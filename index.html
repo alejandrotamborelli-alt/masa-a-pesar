@@ -2,10 +2,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,560;9..144,620&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Fredoka:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
 
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="theme-color" content="#9c5a1c">
+<meta name="theme-color" content="#2f7fc4">
 <link rel="icon" href="icons/icon-192.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -15,509 +15,617 @@
 
 <style>
   :root{
-    --bg:#f2efe9;
-    --surface:#fffdf9;
-    --surface-2:#f7f3ec;
-    --ink:#221f19;
-    --muted:#6f685b;
-    --line:#e3ddd0;
-    --line-strong:#d3ccba;
-    --accent:#9c5a1c;
-    --accent-strong:#7f4713;
-    --accent-tint:#f0e4d5;
-    --danger:#a83a2c;
-    --focus:#2f6f9e;
-    --on-accent:#fff;
-    --result-bg:rgba(42,140,200,.10);
-    --result-border:rgba(42,140,200,.28);
-    --chevron:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none' stroke='%236f685b' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M1 1.5 6 6.5 11 1.5'/></svg>");
-    --shadow:24px 24px 60px -32px rgba(60,45,20,.35);
-  }
-  @media (prefers-color-scheme:dark){
-    :root:not([data-theme="light"]){
-      --bg:#1a1815;
-      --surface:#231f1a;
-      --surface-2:#2b261f;
-      --ink:#ece6da;
-      --muted:#a79d8b;
-      --line:#38322a;
-      --line-strong:#4a4237;
-      --accent:#e0964a;
-      --accent-strong:#eaa863;
-      --accent-tint:#33291d;
-      --danger:#e0765f;
-      --focus:#7fb5d8;
-      --on-accent:#231f1a;
-      --result-bg:rgba(120,190,235,.13);
-      --result-border:rgba(120,190,235,.26);
-      --chevron:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none' stroke='%23a79d8b' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M1 1.5 6 6.5 11 1.5'/></svg>");
-      --shadow:24px 24px 60px -32px rgba(0,0,0,.55);
-    }
-  }
-  :root[data-theme="dark"]{
-    --bg:#1a1815;
-    --surface:#231f1a;
-    --surface-2:#2b261f;
-    --ink:#ece6da;
-    --muted:#a79d8b;
-    --line:#38322a;
-    --line-strong:#4a4237;
-    --accent:#e0964a;
-    --accent-strong:#eaa863;
-    --accent-tint:#33291d;
-    --danger:#e0765f;
-    --focus:#7fb5d8;
-    --on-accent:#231f1a;
-    --result-bg:rgba(120,190,235,.13);
-    --result-border:rgba(120,190,235,.26);
-    --chevron:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none' stroke='%23a79d8b' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M1 1.5 6 6.5 11 1.5'/></svg>");
-    --shadow:24px 24px 60px -32px rgba(0,0,0,.55);
+    --pill-red-1:#c33a2a;
+    --pill-red-2:#8f2318;
+    --pill-blue-1:#2f74b3;
+    --pill-blue-2:#1d4d83;
+    --pill-edge:#390d08;
+    --field-bg:rgba(255,255,255,.94);
+    --ink:#2a1a17;
+    --scene-fallback:#bfe0f5;
   }
 
   *{box-sizing:border-box}
+  [hidden]{display:none!important}
   html{-webkit-text-size-adjust:100%}
   body{
     margin:0;
-    background:var(--bg);
-    color:var(--ink);
-    font-family:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
-    line-height:1.55;
-    -webkit-font-smoothing:antialiased;
-    display:flex;
-    justify-content:center;
-    align-items:flex-start;
     min-height:100vh;
-    padding:clamp(14px,4vw,48px);
-  }
-
-  .sheet{
-    width:100%;
-    max-width:540px;
-    background:var(--surface);
-    border:1px solid var(--line);
-    border-radius:14px;
-    box-shadow:var(--shadow);
-  }
-
-  header{
-    padding:22px clamp(20px,5vw,34px) 18px;
-    border-bottom:1px solid var(--line);
     display:flex;
-    gap:14px;
-    align-items:flex-start;
-  }
-  .mark{
-    flex:none;
-    width:40px;height:40px;
-    color:var(--accent);
-    margin-top:2px;
-  }
-  .mark svg{width:100%;height:100%;display:block}
-  h1{
-    margin:0;
-    font-family:"Fraunces","Times New Roman",serif;
-    font-weight:560;
-    font-size:clamp(1.5rem,5vw,1.9rem);
-    letter-spacing:-.01em;
-    line-height:1.1;
-    text-wrap:balance;
-  }
-  .sub{
-    margin:.35rem 0 0;
-    color:var(--muted);
-    font-size:.9rem;
+    align-items:center;
+    justify-content:center;
+    padding:2vmin;
+    background:#cfe6f6;
+    background:
+      radial-gradient(120% 120% at 30% 10%, #e4f2fb 0%, #bcdcf1 55%, #9cc7e8 100%);
+    font-family:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
   }
 
-  form{padding:clamp(18px,5vw,30px);display:flex;flex-direction:column;gap:16px}
-  fieldset{margin:0;padding:0;border:0;min-width:0}
-
-  .field{display:flex;flex-direction:column;gap:7px}
-  label,.legend{
-    font-size:.72rem;
-    font-weight:600;
-    letter-spacing:.09em;
-    text-transform:uppercase;
-    color:var(--muted);
-  }
-  .hint{font-size:.78rem;color:var(--muted);letter-spacing:0;text-transform:none;font-weight:400}
-
-  .control{
-    display:flex;
-    border:1px solid var(--line-strong);
-    border-radius:9px;
-    background:var(--surface-2);
+  /* ---- Escena que se achica manteniendo proporción ---- */
+  .scene{
+    --u:min(94vw, calc(92vh * 1.044), 720px);
+    position:relative;
+    width:var(--u);
+    height:calc(var(--u) / 1.044);
+    font-size:calc(var(--u) * 0.037);
+    background:var(--scene-fallback) center/cover no-repeat;
+    background-image:url("assets/fondo.jpg");
+    border-radius:calc(var(--u) * 0.03);
+    box-shadow:0 1.2vmin 4vmin -1vmin rgba(24,60,90,.45);
     overflow:hidden;
-    transition:border-color .15s,box-shadow .15s;
+    isolation:isolate;
   }
-  .control:focus-within{
-    border-color:var(--focus);
-    box-shadow:0 0 0 3px color-mix(in srgb,var(--focus) 26%,transparent);
+
+  .eq{
+    position:absolute;
+    height:auto;
+    z-index:1;
+    pointer-events:none;
+    -webkit-user-select:none;user-select:none;
+    filter:drop-shadow(0 0.15em 0.3em rgba(20,50,80,.25));
   }
-  .control input{
-    flex:1;
+  .eq-frasco{ left:0%;  top:29%; width:31%; }
+  .scene[data-mode="mass"]   .eq-mid  { left:38%; top:29%; width:23%; }  /* matraz */
+  .scene[data-mode="mass"]   .eq-right{ left:58%; top:33%; width:41%; }  /* balanza */
+  .scene[data-mode="volume"] .eq-mid  { left:32%; top:33%; width:36%; }  /* balanza */
+  .scene[data-mode="volume"] .eq-right{ left:68%; top:29%; width:24%; }  /* matraz */
+
+  /* ---- Píldoras ---- */
+  .pill{
+    position:absolute;
+    z-index:2;
+    display:flex;
+    align-items:center;
+    gap:.35em;
+    padding:.34em .42em;
+    border-radius:999px;
+    border:0.09em solid var(--pill-edge);
+    background:linear-gradient(180deg,var(--pill-red-1),var(--pill-red-2));
+    box-shadow:0 .18em .5em rgba(0,0,0,.28), inset 0 .06em 0 rgba(255,255,255,.28);
+    color:#fff;
+  }
+  .pill-label{
+    flex:none;
+    font-family:"Fredoka","Trebuchet MS",sans-serif;
+    font-weight:600;
+    font-size:.6em;
+    line-height:1.1;
+    padding-left:.35em;
+    white-space:nowrap;
+    text-shadow:0 .06em .08em rgba(0,0,0,.4);
+  }
+  .pill-input{
+    flex:1 1 auto;
     min-width:0;
     border:0;
-    background:transparent;
+    border-radius:999px;
+    background:var(--field-bg);
     color:var(--ink);
     font:inherit;
-    font-size:1.05rem;
+    font-size:.62em;
+    font-weight:600;
+    text-align:center;
+    padding:.32em .5em;
     font-variant-numeric:tabular-nums;
-    padding:12px 14px;
   }
-  .control input:focus{outline:none}
-  .control .unit-static{
+  .pill-input:focus{ outline:.14em solid #ffd27a; outline-offset:.05em; }
+  .pill-input::placeholder{ color:#b6a29d; font-weight:500; }
+
+  .pill-unit{
     flex:none;
-    display:flex;align-items:center;
-    padding:0 14px;
-    font-size:.9rem;
-    color:var(--muted);
-    border-left:1px solid var(--line-strong);
-    background:color-mix(in srgb,var(--line) 30%,transparent);
+    appearance:none;-webkit-appearance:none;
+    border:0;
+    border-radius:999px;
+    background:rgba(255,255,255,.18);
+    color:#fff;
+    font-family:"Fredoka","Trebuchet MS",sans-serif;
+    font-weight:600;
+    font-size:.56em;
+    padding:.3em 1.5em .3em .6em;
+    cursor:pointer;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='7' viewBox='0 0 10 7' fill='none' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M1 1.3 5 5.3 9 1.3'/></svg>");
+    background-repeat:no-repeat;
+    background-position:right .5em center;
+  }
+  .pill-unit option{ color:var(--ink); }
+
+  .pill-value{
+    flex:1 1 auto;
+    text-align:center;
+    background:var(--field-bg);
+    color:#123a5e;
+    font-weight:700;
+    border-radius:999px;
+    padding:.32em .5em;
+    font-size:.62em;
+    font-variant-numeric:tabular-nums;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
   }
 
-  .control .unit-select{
-    flex:none;
-    appearance:none;
-    -webkit-appearance:none;
-    border:0;
-    border-left:1px solid var(--line-strong);
-    border-radius:0;
-    background-color:color-mix(in srgb,var(--line) 30%,transparent);
-    background-image:var(--chevron);
-    background-repeat:no-repeat;
-    background-position:right 12px center;
-    color:var(--ink);
-    font:inherit;
-    font-size:.95rem;
-    padding:0 34px 0 14px;
+  /* Posiciones fijas */
+  #pill-compuesto{ left:2%;  top:14.5%; width:44%; }
+  #pill-conc{      left:53%; top:14.5%; width:45%; }
+  #pill-pm{        left:1.5%; top:70.5%; width:33%; }
+  #pill-pureza{    left:1.5%; top:81.5%; width:33%; }
+
+  /* Las dos que cambian de lugar y de rol según el modo */
+  .scene[data-mode="mass"]   #pill-vol  { left:31%;   top:78.5%; width:30.5%; }
+  .scene[data-mode="mass"]   #pill-mass { left:64.5%; top:78.5%; width:34%; }
+  .scene[data-mode="volume"] #pill-mass { left:31%;   top:78.5%; width:30.5%; }
+  .scene[data-mode="volume"] #pill-vol  { left:64.5%; top:78.5%; width:34%; }
+
+  .pill.is-result{
+    background:linear-gradient(180deg,var(--pill-blue-1),var(--pill-blue-2));
     cursor:pointer;
   }
-  .control .unit-select:focus{outline:none}
-  .control .unit-select option{color:var(--ink);background:var(--surface)}
-  .control .unit-select.mode-select{
-    flex:1;
-    border-left:0;
-    background-color:transparent;
-    font-size:1.05rem;
-    padding:12px 34px 12px 14px;
+  .pill.is-result .pill-label{ }
+  .pill.is-result:focus-visible{ outline:.16em solid #ffd27a; outline-offset:.1em; }
+
+  /* Título = botón para cambiar de modo */
+  #pill-title{
+    left:22%; top:2.6%; width:56%;
+    justify-content:center;
+    background:linear-gradient(180deg,#c33a2a,#7f1d13);
+    cursor:pointer;
+    padding:.55em .7em;
+  }
+  #pill-title .pill-label{
+    font-size:1.02em;
+    font-weight:700;
+    padding:0;
+    letter-spacing:.005em;
+  }
+  #pill-title .caret{ font-size:.7em; margin-left:.5em; opacity:.9; }
+  #pill-title:focus-visible{ outline:.16em solid #ffd27a; outline-offset:.12em; }
+
+  .pill.shake{ animation:shake .35s ease; }
+  @keyframes shake{
+    0%,100%{ transform:translateX(0) }
+    25%{ transform:translateX(-0.25em) }
+    75%{ transform:translateX(0.25em) }
   }
 
-  [hidden]{display:none!important}
-
-  .result{
-    background:var(--result-bg);
-    border:1px solid var(--result-border);
-    border-radius:11px;
-    padding:16px clamp(16px,4vw,22px) 18px;
+  /* ---- Pizarra (detalle del cálculo) ---- */
+  #board{
+    position:fixed;
+    inset:0;
+    z-index:50;
+    display:grid;
+    place-items:center;
+    padding:4vmin;
+    background:rgba(196,222,241,.5);
+    -webkit-backdrop-filter:blur(11px) saturate(1.05);
+    backdrop-filter:blur(11px) saturate(1.05);
   }
-  .result .cap{
-    font-size:.72rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;
-    color:var(--muted);
+  #board-canvas{
+    width:auto;
+    height:auto;
+    max-width:min(94vw, 980px);
+    max-height:84vh;
+    cursor:copy;
+    filter:drop-shadow(0 2vmin 5vmin rgba(20,50,80,.4));
+    border-radius:1vmin;
   }
-  .value{
-    margin:.3rem 0 0;
-    font-family:"Fraunces","Times New Roman",serif;
-    font-weight:620;
-    font-size:clamp(1.9rem,8vw,2.5rem);
-    line-height:1.05;
-    letter-spacing:-.02em;
-    font-variant-numeric:tabular-nums;
-    color:var(--accent-strong);
-  }
-  .value .u{font-size:.5em;font-weight:560;color:var(--muted);margin-left:.2em}
-  .value.placeholder{color:var(--muted);font-size:clamp(1.1rem,4vw,1.35rem);font-weight:560}
-  .detail{
-    margin-top:12px;
-    padding-top:12px;
-    border-top:1px dashed var(--line-strong);
-    font-family:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
-    font-size:.82rem;
-    color:var(--muted);
-    line-height:1.7;
-    word-break:break-word;
-  }
-  .detail div + div{margin-top:2px}
-  .detail.err{color:var(--danger);font-family:"IBM Plex Sans",sans-serif}
-
-  footer{
-    padding:14px clamp(20px,5vw,34px) 20px;
-    border-top:1px solid var(--line);
-    font-size:.76rem;
-    color:var(--muted);
+  #board-hint{
+    position:fixed;
+    left:0; right:0; bottom:2.5vmin;
+    text-align:center;
+    font-family:"Fredoka",sans-serif;
+    font-weight:500;
+    font-size:clamp(11px,2.4vmin,15px);
+    color:#1c3f5e;
+    pointer-events:none;
+    text-shadow:0 1px 2px rgba(255,255,255,.6);
   }
 
-  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+  #toast{
+    position:fixed;
+    left:50%; bottom:9vmin;
+    transform:translateX(-50%) translateY(1em);
+    background:#173a57;
+    color:#fff;
+    font-family:"Fredoka",sans-serif;
+    font-weight:500;
+    font-size:clamp(12px,2.4vmin,15px);
+    padding:.6em 1.1em;
+    border-radius:999px;
+    box-shadow:0 .6vmin 2vmin rgba(0,0,0,.3);
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .2s, transform .2s;
+    z-index:60;
+  }
+  #toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+
+  @media (prefers-reduced-motion:reduce){
+    *{ animation:none!important; transition:none!important; }
+  }
 </style>
 
-<div class="sheet">
-  <header>
-    <span class="mark" aria-hidden="true">
-      <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M20 5v28"/>
-        <path d="M9 33h22"/>
-        <path d="M6 12h28"/>
-        <circle cx="20" cy="8" r="2.4" fill="currentColor" stroke="none"/>
-        <path d="M6 12l-4 9a5 5 0 0 0 8 0z"/>
-        <path d="M34 12l-4 9a5 5 0 0 0 8 0z"/>
-      </svg>
-    </span>
-    <div>
-      <h1>Masa a pesar</h1>
-      <p class="sub">Peso molecular y concentraci&oacute;n final; complet&aacute;s la masa o el volumen y te devuelve el otro. Separador decimal: coma o punto.</p>
-    </div>
-  </header>
+<div class="scene" id="scene" data-mode="mass">
+  <img class="eq eq-frasco" src="assets/frasco.png" alt="" aria-hidden="true">
+  <img class="eq eq-mid" id="eq-mid" src="assets/matraz.png" alt="" aria-hidden="true">
+  <img class="eq eq-right" id="eq-right" src="assets/balanza.png" alt="" aria-hidden="true">
 
-  <form id="calc" autocomplete="off" novalidate>
-    <fieldset class="field">
-      <span class="legend" id="mode-legend">Qu&eacute; quer&eacute;s calcular</span>
-      <div class="control">
-        <select id="mode" class="unit-select mode-select" aria-labelledby="mode-legend">
-          <option value="mass" selected>Masa a pesar</option>
-          <option value="volume">Volumen necesario</option>
-        </select>
-      </div>
-    </fieldset>
+  <button type="button" class="pill" id="pill-title" aria-label="Cambiar entre calcular masa o volumen">
+    <span class="pill-label" id="title-text">Masa a pesar</span><span class="caret" aria-hidden="true">▾</span>
+  </button>
 
-    <div class="field">
-      <label for="mw">Peso molecular</label>
-      <div class="control">
-        <input id="mw" inputmode="decimal" placeholder="p. ej. 58,44" aria-describedby="mw-hint">
-        <span class="unit-static">g/mol</span>
-      </div>
-      <span class="hint" id="mw-hint">No se usa cuando la concentraci&oacute;n est&aacute; en ppm.</span>
-    </div>
+  <div class="pill" id="pill-compuesto">
+    <label class="pill-label" for="compuesto">Compuesto</label>
+    <input class="pill-input" id="compuesto" type="text" maxlength="40" autocomplete="off" placeholder="opcional">
+  </div>
 
-    <div class="field">
-      <label for="pur">Pureza del reactivo</label>
-      <div class="control">
-        <input id="pur" inputmode="decimal" placeholder="100" aria-describedby="pur-hint">
-        <span class="unit-static">%</span>
-      </div>
-      <span class="hint" id="pur-hint">Opcional. Dejala vac&iacute;a o en 100 si el reactivo es puro.</span>
-    </div>
+  <div class="pill" id="pill-conc">
+    <label class="pill-label" for="conc">Concentración</label>
+    <input class="pill-input" id="conc" inputmode="decimal" autocomplete="off" placeholder="—">
+    <select class="pill-unit" id="conc-unit" aria-label="Unidad de concentración">
+      <option value="M">M</option>
+      <option value="mM" selected>mM</option>
+      <option value="uM">µM</option>
+      <option value="ppm">ppm</option>
+    </select>
+  </div>
 
-    <fieldset class="field">
-      <span class="legend" id="conc-legend">Concentraci&oacute;n final</span>
-      <div class="control" role="group" aria-labelledby="conc-legend">
-        <input id="conc" inputmode="decimal" placeholder="p. ej. 10">
-        <select id="conc-unit" class="unit-select" aria-label="Unidad de concentraci&oacute;n">
-          <option value="M">M</option>
-          <option value="mM" selected>mM</option>
-          <option value="uM">&micro;M</option>
-          <option value="ppm">ppm</option>
-        </select>
-      </div>
-      <span class="hint" id="conc-hint">mM = milimolar, &micro;M = micromolar. ppm se interpreta como mg/L (soluci&oacute;n acuosa).</span>
-    </fieldset>
+  <div class="pill" id="pill-pm">
+    <label class="pill-label" for="pm">PM</label>
+    <input class="pill-input" id="pm" inputmode="decimal" autocomplete="off" placeholder="—">
+    <select class="pill-unit" id="pm-unit" aria-label="Unidad de peso molecular">
+      <option value="g/mol" selected>g/mol</option>
+      <option value="kg/mol">kg/mol</option>
+    </select>
+  </div>
 
-    <fieldset class="field" id="vol-field">
-      <span class="legend" id="vol-legend">Volumen final</span>
-      <div class="control" role="group" aria-labelledby="vol-legend">
-        <input id="vol" inputmode="decimal" placeholder="p. ej. 250">
-        <select id="vol-unit" class="unit-select" aria-label="Unidad de volumen">
-          <option value="uL">&micro;L</option>
-          <option value="mL" selected>mL</option>
-          <option value="L">L</option>
-        </select>
-      </div>
-    </fieldset>
+  <div class="pill" id="pill-pureza">
+    <label class="pill-label" for="pureza">Pureza</label>
+    <input class="pill-input" id="pureza" inputmode="decimal" autocomplete="off" placeholder="100">
+    <span class="pill-unit" style="pointer-events:none">%</span>
+  </div>
 
-    <fieldset class="field" id="mass-field" hidden>
-      <span class="legend" id="mass-legend">Masa que pesaste</span>
-      <div class="control" role="group" aria-labelledby="mass-legend">
-        <input id="mass" inputmode="decimal" placeholder="p. ej. 25">
-        <select id="mass-unit" class="unit-select" aria-label="Unidad de masa">
-          <option value="ug">&micro;g</option>
-          <option value="mg" selected>mg</option>
-          <option value="g">g</option>
-        </select>
-      </div>
-    </fieldset>
+  <div class="pill io" id="pill-vol">
+    <label class="pill-label" for="vol" id="lbl-vol">Vol. final</label>
+    <input class="pill-input" id="vol" inputmode="decimal" autocomplete="off" placeholder="—">
+    <select class="pill-unit" id="vol-unit" aria-label="Unidad de volumen">
+      <option value="uL">µL</option>
+      <option value="mL" selected>mL</option>
+      <option value="L">L</option>
+    </select>
+    <span class="pill-value" id="vol-out" hidden></span>
+  </div>
 
-    <div class="result">
-      <span class="cap" id="result-cap">Deb&eacute;s pesar</span>
-      <p class="value placeholder" id="value" aria-live="polite">Complet&aacute; los campos</p>
-      <div class="detail" id="detail" aria-live="polite"></div>
-    </div>
-  </form>
-
-  <footer>
-    <span id="footer-formula">m = PM &middot; C &middot; V &nbsp;&mdash;&nbsp; para ppm: m = C(mg/L) &middot; V(L)</span>. La pureza corrige la masa a pesar; acord&aacute;te tambi&eacute;n de las sales hidratadas.
-  </footer>
+  <div class="pill io" id="pill-mass">
+    <label class="pill-label" for="mass" id="lbl-mass">Pesar</label>
+    <input class="pill-input" id="mass" inputmode="decimal" autocomplete="off" placeholder="—">
+    <select class="pill-unit" id="mass-unit" aria-label="Unidad de masa">
+      <option value="ug">µg</option>
+      <option value="mg" selected>mg</option>
+      <option value="g">g</option>
+    </select>
+    <span class="pill-value" id="mass-out" hidden></span>
+  </div>
 </div>
 
+<div id="board" hidden>
+  <canvas id="board-canvas"></canvas>
+  <div id="board-hint">Tocá la pizarra para copiarla como imagen · tocá afuera para volver</div>
+</div>
+<div id="toast" role="status" aria-live="polite"></div>
+
 <script>
-(function(){
-  var $ = function(id){ return document.getElementById(id); };
-  var modeEl = $("mode");
-  var mwEl = $("mw"), purEl = $("pur"), concEl = $("conc"), volEl = $("vol"), massEl = $("mass");
-  var concUnitEl = $("conc-unit"), volUnitEl = $("vol-unit"), massUnitEl = $("mass-unit");
-  var volField = $("vol-field"), massField = $("mass-field");
-  var valueEl = $("value"), detailEl = $("detail"), resultCap = $("result-cap");
-  var footerFormula = $("footer-formula");
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var scene = $("scene");
 
-  var concUnit = concUnitEl.value;
-  var volUnit  = volUnitEl.value;
-  var massUnit = massUnitEl.value;
+  var pmEl = $("pm"), pmUnitEl = $("pm-unit");
+  var purEl = $("pureza");
+  var concEl = $("conc"), concUnitEl = $("conc-unit");
+  var volEl = $("vol"), volUnitEl = $("vol-unit"), volOut = $("vol-out");
+  var massEl = $("mass"), massUnitEl = $("mass-unit"), massOut = $("mass-out");
+  var compuestoEl = $("compuesto");
+  var pillVol = $("pill-vol"), pillMass = $("pill-mass");
+  var lblVol = $("lbl-vol"), lblMass = $("lbl-mass");
+  var titleText = $("title-text");
+  var eqMid = $("eq-mid"), eqRight = $("eq-right");
 
-  var VOL_TO_L   = { L:1, mL:1e-3, uL:1e-6 };
-  var CONC_TO_M  = { M:1, mM:1e-3, uM:1e-6 };
-  var MASS_TO_G  = { g:1, mg:1e-3, ug:1e-6 };
-  var UNIT_LABEL = { M:"M", mM:"mM", uM:"µM", ppm:"ppm", L:"L", mL:"mL", uL:"µL", g:"g", mg:"mg", ug:"µg" };
+  var VOL_TO_L  = { L: 1, mL: 1e-3, uL: 1e-6 };
+  var CONC_TO_M = { M: 1, mM: 1e-3, uM: 1e-6 };
+  var MASS_TO_G = { g: 1, mg: 1e-3, ug: 1e-6 };
+  var PM_TO_GMOL = { "g/mol": 1, "kg/mol": 1000 };
+  var LBL = { M: "M", mM: "mM", uM: "µM", ppm: "ppm", L: "L", mL: "mL", uL: "µL", g: "g", mg: "mg", ug: "µg" };
 
-  function num(el){
-    if(!el.value) return NaN;
+  var mode = "mass";                 // "mass" = calcular masa | "volume" = calcular volumen
+  var last = { ok: false };          // último cálculo válido
+
+  function num(el) {
+    if (!el.value) return NaN;
     return parseFloat(el.value.replace(",", ".").trim());
   }
-
-  function fmt(n, p){
-    if(n === 0) return "0";
-    if(!isFinite(n)) return "—";
+  function fmt(n, p) {
+    if (n === 0) return "0";
+    if (!isFinite(n)) return "—";
     var abs = Math.abs(n);
-    if(abs < 1e-4 || abs >= 1e7) return n.toExponential(Math.max(0,(p||4)-1));
-    var r = Number(n.toPrecision(p || 4));
-    return r.toLocaleString("es-ES", { maximumFractionDigits: 12 });
+    if (abs < 1e-4 || abs >= 1e7) return n.toExponential(Math.max(0, (p || 4) - 1));
+    return Number(n.toPrecision(p || 4)).toLocaleString("es-ES", { maximumFractionDigits: 12 });
+  }
+  function scaleMass(g) {
+    var a = Math.abs(g);
+    if (a >= 1) return { val: g, unit: "g" };
+    if (a >= 1e-3) return { val: g * 1e3, unit: "mg" };
+    if (a >= 1e-6) return { val: g * 1e6, unit: "µg" };
+    return { val: g * 1e9, unit: "ng" };
+  }
+  function scaleVol(l) {
+    var a = Math.abs(l);
+    if (a >= 1) return { val: l, unit: "L" };
+    if (a >= 1e-3) return { val: l * 1e3, unit: "mL" };
+    return { val: l * 1e6, unit: "µL" };
   }
 
-  function scaleMass(grams){
-    var abs = Math.abs(grams), val, unit;
-    if(abs >= 1){ val = grams; unit = "g"; }
-    else if(abs >= 1e-3){ val = grams * 1e3; unit = "mg"; }
-    else if(abs >= 1e-6){ val = grams * 1e6; unit = "µg"; }
-    else { val = grams * 1e9; unit = "ng"; }
-    return { val: val, unit: unit };
+  function applyMode() {
+    scene.setAttribute("data-mode", mode);
+    var solveVol = mode === "volume";
+    titleText.textContent = solveVol ? "Volumen necesario" : "Masa a pesar";
+
+    // equipos: frasco (izq, fijo) · medio · derecha
+    eqMid.src   = solveVol ? "assets/balanza.png" : "assets/matraz.png";
+    eqRight.src = solveVol ? "assets/matraz.png"  : "assets/balanza.png";
+
+    // pill-vol: dato en modo masa, resultado en modo volumen
+    setPillRole(pillVol, volEl, volUnitEl, volOut, !solveVol);
+    lblVol.textContent = solveVol ? "Volumen" : "Vol. final";
+    // pill-mass: resultado en modo masa, dato en modo volumen
+    setPillRole(pillMass, massEl, massUnitEl, massOut, solveVol);
+    lblMass.textContent = solveVol ? "Pesaje" : "Pesar";
+
+    calc();
   }
 
-  function scaleVol(liters){
-    var abs = Math.abs(liters), val, unit;
-    if(abs >= 1){ val = liters; unit = "L"; }
-    else if(abs >= 1e-3){ val = liters * 1e3; unit = "mL"; }
-    else { val = liters * 1e6; unit = "µL"; }
-    return { val: val, unit: unit };
+  function setPillRole(pill, input, unitSel, outSpan, isInput) {
+    if (isInput) {
+      pill.classList.remove("is-result");
+      pill.removeAttribute("role"); pill.removeAttribute("tabindex");
+      input.hidden = false; unitSel.hidden = false; outSpan.hidden = true;
+    } else {
+      pill.classList.add("is-result");
+      pill.setAttribute("role", "button"); pill.setAttribute("tabindex", "0");
+      input.hidden = true; unitSel.hidden = true; outSpan.hidden = false;
+    }
   }
 
-  function placeholder(msg){
-    valueEl.className = "value placeholder";
-    valueEl.textContent = msg;
-    detailEl.className = "detail";
-    detailEl.textContent = "";
+  function showResult(scaled) {
+    var span = mode === "mass" ? massOut : volOut;
+    span.textContent = fmt(scaled.val) + " " + scaled.unit;
+  }
+  function clearResult(msg) {
+    var span = mode === "mass" ? massOut : volOut;
+    span.textContent = msg || "—";
+    last = { ok: false };
   }
 
-  function error(msg){
-    valueEl.className = "value placeholder";
-    valueEl.textContent = "—";
-    detailEl.className = "detail err";
-    detailEl.textContent = msg;
-  }
-
-  function show(scaled, rawStr, lines){
-    valueEl.className = "value";
-    valueEl.innerHTML = fmt(scaled.val) + '<span class="u">' + scaled.unit + "</span>";
-    detailEl.className = "detail";
-    if(rawStr) lines.unshift(rawStr);
-    detailEl.innerHTML = lines.map(function(l){ return "<div>" + l + "</div>"; }).join("");
-  }
-
-  function applyMode(){
-    var solveVolume = modeEl.value === "volume";
-    volField.hidden = solveVolume;
-    massField.hidden = !solveVolume;
-    resultCap.textContent = solveVolume ? "Volumen necesario" : "Debés pesar";
-    footerFormula.textContent = solveVolume
-      ? "V = m / (PM · C)  —  para ppm: V = m / C(mg/L)"
-      : "m = PM · C · V  —  para ppm: m = C(mg/L) · V(L)";
-  }
-
-  function calc(){
-    var solveVolume = modeEl.value === "volume";
-    var mw = num(mwEl), c = num(concEl);
+  function calc() {
+    var pmRaw = num(pmEl);
+    var pm = isNaN(pmRaw) ? NaN : pmRaw * PM_TO_GMOL[pmUnitEl.value];
+    var c = num(concEl);
+    var concUnit = concUnitEl.value;
     var isPpm = concUnit === "ppm";
-    var needMw = !isPpm;
+    var needPm = !isPpm;
 
-    if(isNaN(c) || (needMw && isNaN(mw))){ placeholder("Completá los campos"); return; }
-    if(c <= 0 || (needMw && mw <= 0)){ error("Los valores deben ser mayores que cero."); return; }
+    if (isNaN(c) || (needPm && isNaN(pm))) { clearResult("—"); return; }
+    if (c <= 0 || (needPm && pm <= 0)) { clearResult("—"); return; }
 
     var pur = num(purEl);
     var purityFrac = 1;
-    if(!isNaN(pur)){
-      if(pur <= 0 || pur > 100){ error("La pureza debe estar entre 0 y 100 %."); return; }
+    if (!isNaN(pur)) {
+      if (pur <= 0 || pur > 100) { clearResult("pureza 0–100"); return; }
       purityFrac = pur / 100;
     }
     var corrige = purityFrac < 1;
 
     var molL = isPpm ? null : c * CONC_TO_M[concUnit];
     var lines = [];
-    if(!isPpm && concUnit !== "M"){
-      lines.push("C = " + fmt(c) + " " + UNIT_LABEL[concUnit] + " = " + fmt(molL, 6) + " mol/L");
+    if (!isPpm && concUnit !== "M") {
+      lines.push("C = " + fmt(c) + " " + LBL[concUnit] + " = " + fmt(molL, 6) + " mol/L");
     }
+    var compuesto = compuestoEl.value.trim();
+    var headline, scaled;
 
-    if(!solveVolume){
-      // --- despejar la masa ---
+    if (mode === "mass") {
       var v = num(volEl);
-      if(isNaN(v)){ placeholder("Completá los campos"); return; }
-      if(v <= 0){ error("Los valores deben ser mayores que cero."); return; }
-      var vL = v * (VOL_TO_L[volUnit] || 1e-3);
+      if (isNaN(v) || v <= 0) { clearResult("—"); return; }
+      var vL = v * (VOL_TO_L[volUnitEl.value] || 1e-3);
       var mLbl = corrige ? "m(puro)" : "m";
       var gramsPure, nMmol = null;
-      if(isPpm){
+      if (isPpm) {
         gramsPure = c * vL / 1000;
         lines.push(mLbl + " = C · V = " + fmt(c) + " mg/L · " + fmt(vL) + " L = " + fmt(c * vL) + " mg");
-        if(!isNaN(mw) && mw > 0) lines.push("≈ " + fmt(c / mw) + " mM  (usando PM = " + fmt(mw) + " g/mol)");
+        if (!isNaN(pm) && pm > 0) lines.push("≈ " + fmt(c / pm) + " mM  (con PM = " + fmt(pm) + " g/mol)");
       } else {
-        gramsPure = mw * molL * vL;
+        gramsPure = pm * molL * vL;
         nMmol = molL * vL * 1000;
-        lines.push(mLbl + " = PM · C · V = " + fmt(mw) + " g/mol · " + fmt(molL, 6) + " mol/L · " + fmt(vL) + " L = " + fmt(gramsPure) + " g");
+        lines.push(mLbl + " = PM · C · V = " + fmt(pm) + " g/mol · " + fmt(molL, 6) + " mol/L · " + fmt(vL) + " L = " + fmt(gramsPure) + " g");
       }
       var grams = gramsPure / purityFrac;
-      if(corrige){
-        lines.push("Pureza " + fmt(pur) + " % → m = " + fmt(gramsPure) + " g / " + fmt(purityFrac) + " = " + fmt(grams) + " g");
-      }
-      if(nMmol !== null) lines.push("Cantidad de sustancia: n = " + fmt(nMmol) + " mmol");
-      var s = scaleMass(grams);
-      show(s, s.unit !== "g" ? ("= " + fmt(grams) + " g") : null, lines);
+      if (corrige) lines.push("Pureza " + fmt(pur) + " % → m = " + fmt(gramsPure) + " g / " + fmt(purityFrac) + " = " + fmt(grams) + " g");
+      if (nMmol !== null) lines.push("Cantidad de sustancia: n = " + fmt(nMmol) + " mmol");
+      scaled = scaleMass(grams);
+      if (scaled.unit !== "g") lines.unshift("= " + fmt(grams) + " g");
+      headline = "Debés pesar  " + fmt(scaled.val) + " " + scaled.unit;
     } else {
-      // --- despejar el volumen ---
       var m = num(massEl);
-      if(isNaN(m)){ placeholder("Completá los campos"); return; }
-      if(m <= 0){ error("Los valores deben ser mayores que cero."); return; }
-      var massG = m * MASS_TO_G[massUnit];
+      if (isNaN(m) || m <= 0) { clearResult("—"); return; }
+      var massG = m * MASS_TO_G[massUnitEl.value];
       var massPure = massG * purityFrac;
       var mLbl2 = corrige ? "m(puro)" : "m";
-      if(corrige){
-        lines.push("Pureza " + fmt(pur) + " % → m(puro) = " + fmt(massG) + " g · " + fmt(purityFrac) + " = " + fmt(massPure) + " g");
-      }
+      if (corrige) lines.push("Pureza " + fmt(pur) + " % → m(puro) = " + fmt(massG) + " g · " + fmt(purityFrac) + " = " + fmt(massPure) + " g");
       var vL2;
-      if(isPpm){
+      if (isPpm) {
         vL2 = massPure * 1000 / c;
         lines.push("V = " + mLbl2 + " / C = " + fmt(massPure * 1000) + " mg / " + fmt(c) + " mg/L = " + fmt(vL2) + " L");
       } else {
-        vL2 = massPure / (mw * molL);
-        lines.push("V = " + mLbl2 + " / (PM · C) = " + fmt(massPure) + " g / (" + fmt(mw) + " g/mol · " + fmt(molL, 6) + " mol/L) = " + fmt(vL2) + " L");
-        lines.push("Cantidad de sustancia: n = " + fmt(massPure / mw * 1000) + " mmol");
+        vL2 = massPure / (pm * molL);
+        lines.push("V = " + mLbl2 + " / (PM · C) = " + fmt(massPure) + " g / (" + fmt(pm) + " g/mol · " + fmt(molL, 6) + " mol/L) = " + fmt(vL2) + " L");
+        lines.push("Cantidad de sustancia: n = " + fmt(massPure / pm * 1000) + " mmol");
       }
-      var sv = scaleVol(vL2);
+      scaled = scaleVol(vL2);
+      if (scaled.unit !== "L") lines.unshift("= " + fmt(vL2) + " L");
       lines.push("Disolvé la masa y enrasá hasta este volumen final.");
-      show(sv, sv.unit !== "L" ? ("= " + fmt(vL2) + " L") : null, lines);
+      headline = "Volumen necesario  " + fmt(scaled.val) + " " + scaled.unit;
+    }
+
+    showResult(scaled);
+    last = {
+      ok: true,
+      title: mode === "mass" ? "Masa a pesar" : "Volumen necesario",
+      compuesto: compuesto,
+      headline: headline,
+      lines: lines
+    };
+  }
+
+  /* ---------------- Pizarra ---------------- */
+  var board = $("board"), canvas = $("board-canvas"), toastEl = $("toast");
+  var boardImg = new Image();
+  boardImg.src = "assets/pizarron.png";
+  var toastTimer;
+
+  function toast(msg) {
+    toastEl.textContent = msg;
+    toastEl.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { toastEl.classList.remove("show"); }, 2200);
+  }
+
+  function wrap(ctx, text, x, y, maxW, lh) {
+    var words = text.split(" "), line = "";
+    for (var i = 0; i < words.length; i++) {
+      var test = line ? line + " " + words[i] : words[i];
+      if (ctx.measureText(test).width > maxW && line) {
+        ctx.fillText(line, x, y); y += lh; line = words[i];
+      } else {
+        line = test;
+      }
+    }
+    if (line) { ctx.fillText(line, x, y); y += lh; }
+    return y;
+  }
+
+  function paintBoard() {
+    var W = 1600;
+    var ratio = (boardImg.naturalHeight && boardImg.naturalWidth)
+      ? boardImg.naturalHeight / boardImg.naturalWidth : 0.563;
+    var H = Math.round(W * ratio);
+    canvas.width = W; canvas.height = H;
+    var ctx = canvas.getContext("2d");
+    ctx.fillStyle = "#fbf7ee";
+    ctx.fillRect(0, 0, W, H);
+    if (boardImg.complete && boardImg.naturalWidth) ctx.drawImage(boardImg, 0, 0, W, H);
+
+    var padX = W * 0.075, x = padX, y = H * 0.135;
+    var maxW = W - padX * 2;
+    ctx.textBaseline = "top";
+
+    ctx.fillStyle = "#9c1f1f";
+    ctx.font = '700 ' + Math.round(H * 0.115) + 'px "Caveat", cursive';
+    ctx.fillText(last.title, x, y);
+    y += H * 0.135;
+
+    ctx.fillStyle = "#33302b";
+    if (last.compuesto) {
+      ctx.font = '500 ' + Math.round(H * 0.072) + 'px "Caveat", cursive';
+      ctx.fillText("Compuesto: " + last.compuesto, x, y);
+      y += H * 0.092;
+    }
+
+    ctx.font = '600 ' + Math.round(H * 0.088) + 'px "Caveat", cursive';
+    y = wrap(ctx, last.headline, x, y, maxW, H * 0.1);
+    y += H * 0.03;
+
+    ctx.font = '500 ' + Math.round(H * 0.058) + 'px "Caveat", cursive';
+    for (var i = 0; i < last.lines.length; i++) {
+      y = wrap(ctx, last.lines[i], x, y, maxW, H * 0.072);
     }
   }
 
-  modeEl.addEventListener("change", function(){ applyMode(); calc(); });
-  concUnitEl.addEventListener("change", function(){ concUnit = concUnitEl.value; calc(); });
-  volUnitEl.addEventListener("change", function(){ volUnit = volUnitEl.value; calc(); });
-  massUnitEl.addEventListener("change", function(){ massUnit = massUnitEl.value; calc(); });
-  [mwEl, purEl, concEl, volEl, massEl].forEach(function(el){ el.addEventListener("input", calc); });
+  function openBoard() {
+    if (!last.ok) {
+      var p = mode === "mass" ? pillMass : pillVol;
+      p.classList.remove("shake"); void p.offsetWidth; p.classList.add("shake");
+      return;
+    }
+    Promise.all([
+      document.fonts.load('700 80px "Caveat"'),
+      document.fonts.load('600 80px "Caveat"'),
+      document.fonts.load('500 80px "Caveat"')
+    ]).catch(function () {}).then(function () {
+      paintBoard();
+      board.hidden = false;
+      document.documentElement.style.overflow = "hidden";
+    });
+  }
+  function closeBoard() {
+    board.hidden = true;
+    document.documentElement.style.overflow = "";
+  }
+
+  canvas.addEventListener("click", function (e) {
+    e.stopPropagation();
+    canvas.toBlob(function (blob) {
+      if (!blob) { toast("No se pudo generar la imagen"); return; }
+      if (navigator.clipboard && window.ClipboardItem) {
+        navigator.clipboard.write([new ClipboardItem({ "image/png": blob })])
+          .then(function () { toast("Cálculo copiado ✓  pegalo en tu documento"); })
+          .catch(function () { downloadBlob(blob); });
+      } else {
+        downloadBlob(blob);
+      }
+    }, "image/png");
+  });
+  function downloadBlob(blob) {
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "masa-a-pesar.png";
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+    toast("Imagen guardada");
+  }
+  board.addEventListener("click", closeBoard);
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && !board.hidden) closeBoard();
+  });
+
+  function openResult() { openBoard(); }
+  pillVol.addEventListener("click", function () { if (pillVol.classList.contains("is-result")) openResult(); });
+  pillMass.addEventListener("click", function () { if (pillMass.classList.contains("is-result")) openResult(); });
+  [pillVol, pillMass].forEach(function (p) {
+    p.addEventListener("keydown", function (e) {
+      if (p.classList.contains("is-result") && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); openResult(); }
+    });
+  });
+
+  /* ---------------- Modo ---------------- */
+  $("pill-title").addEventListener("click", function () {
+    mode = mode === "mass" ? "volume" : "mass";
+    applyMode();
+  });
+
+  [pmEl, purEl, concEl, volEl, massEl, compuestoEl].forEach(function (el) {
+    el.addEventListener("input", calc);
+  });
+  [pmUnitEl, concUnitEl, volUnitEl, massUnitEl].forEach(function (el) {
+    el.addEventListener("change", calc);
+  });
 
   applyMode();
-  calc();
-})();
-</script>
 
-<script>
-  // Modo offline: solo corre si la página se sirve por http(s) (GitHub Pages),
-  // no cuando se abre como archivo suelto ni dentro del visor de Artifacts.
+  /* ---------------- Offline ---------------- */
   if ("serviceWorker" in navigator && location.protocol.indexOf("http") === 0) {
     window.addEventListener("load", function () {
       navigator.serviceWorker.register("sw.js").catch(function () {});
     });
   }
+})();
 </script>

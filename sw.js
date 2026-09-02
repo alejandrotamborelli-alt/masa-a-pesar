@@ -4,7 +4,7 @@
  * Ese número es lo único que le avisa al navegador que hay una versión nueva
  * para descargar. Si no cambia, el iPad sigue mostrando la copia vieja.
  */
-const VERSION = 'v2';
+const VERSION = 'v3';
 const CACHE = 'masa-a-pesar-' + VERSION;
 
 const CORE = [
@@ -14,7 +14,12 @@ const CORE = [
   './icons/icon-192.png',
   './icons/icon-512.png',
   './icons/icon-maskable-512.png',
-  './apple-touch-icon.png'
+  './apple-touch-icon.png',
+  './assets/fondo.jpg',
+  './assets/frasco.png',
+  './assets/matraz.png',
+  './assets/balanza.png',
+  './assets/pizarron.png'
 ];
 
 self.addEventListener('install', (event) => {
