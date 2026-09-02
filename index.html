@@ -462,7 +462,7 @@
       if (nMmol !== null) lines.push("Cantidad de sustancia: n = " + fmt(nMmol) + " mmol");
       scaled = scaleMass(grams);
       if (scaled.unit !== "g") lines.unshift("= " + fmt(grams) + " g");
-      headline = "Debés pesar  " + fmt(scaled.val) + " " + scaled.unit;
+      headline = "Para " + fmt(v) + " " + LBL[volUnitEl.value] + "  →  " + fmt(scaled.val) + " " + scaled.unit;
     } else {
       var m = num(massEl);
       if (isNaN(m) || m <= 0) { clearResult("—"); return; }
@@ -482,14 +482,16 @@
       scaled = scaleVol(vL2);
       if (scaled.unit !== "L") lines.unshift("= " + fmt(vL2) + " L");
       lines.push("Disolvé la masa y enrasá hasta este volumen final.");
-      headline = "Volumen necesario  " + fmt(scaled.val) + " " + scaled.unit;
+      headline = "Para " + fmt(m) + " " + LBL[massUnitEl.value] + "  →  " + fmt(scaled.val) + " " + scaled.unit;
     }
+
+    var titulo = fmt(c) + " " + LBL[concUnit];
+    if (compuesto) titulo = compuesto + " " + titulo;
 
     showResult(scaled);
     last = {
       ok: true,
-      title: mode === "mass" ? "Masa a pesar" : "Volumen necesario",
-      compuesto: compuesto,
+      title: titulo,
       headline: headline,
       lines: lines
     };
@@ -537,17 +539,19 @@
     ctx.textBaseline = "top";
 
     ctx.fillStyle = "#9c1f1f";
-    ctx.font = '700 ' + Math.round(H * 0.115) + 'px "Caveat", cursive';
-    ctx.fillText(last.title, x, y);
-    y += H * 0.135;
+    var tFont = Math.round(H * 0.12);
+    ctx.font = '700 ' + tFont + 'px "Caveat", cursive';
+    var tW = ctx.measureText(last.title).width;
+    if (tW > maxW) {
+      tFont = Math.floor(tFont * maxW / tW);
+      ctx.font = '700 ' + tFont + 'px "Caveat", cursive';
+    }
+    ctx.textAlign = "center";
+    ctx.fillText(last.title, W / 2, y);
+    ctx.textAlign = "left";
+    y += H * 0.16;
 
     ctx.fillStyle = "#33302b";
-    if (last.compuesto) {
-      ctx.font = '500 ' + Math.round(H * 0.072) + 'px "Caveat", cursive';
-      ctx.fillText("Compuesto: " + last.compuesto, x, y);
-      y += H * 0.092;
-    }
-
     ctx.font = '600 ' + Math.round(H * 0.088) + 'px "Caveat", cursive';
     y = wrap(ctx, last.headline, x, y, maxW, H * 0.1);
     y += H * 0.03;
