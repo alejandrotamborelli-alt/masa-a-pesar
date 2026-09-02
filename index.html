@@ -70,11 +70,11 @@
   }
   /* Los tres comparten caja (mismo top y ancho) => arrancan y terminan a la
      misma altura. Cada uno centrado sobre su píldora inferior. */
-  .eq-frasco{ left:5%;  top:28%; width:23%; }
-  .scene[data-mode="mass"]   .eq-mid  { left:39%; top:28%; width:23%; }  /* matraz sobre "Vol. final" */
-  .scene[data-mode="mass"]   .eq-right{ left:72%; top:28%; width:23%; }  /* balanza sobre "Pesar" */
-  .scene[data-mode="volume"] .eq-mid  { left:39%; top:28%; width:23%; }  /* balanza sobre "Pesaje" */
-  .scene[data-mode="volume"] .eq-right{ left:72%; top:28%; width:23%; }  /* matraz sobre "Volumen" */
+  .eq-frasco{ left:5%;  top:28%;   width:23%; }
+  .scene[data-mode="mass"]   .eq-mid  { left:39%; top:28.5%; width:23%; }  /* matraz sobre "Volumen" */
+  .scene[data-mode="mass"]   .eq-right{ left:72%; top:29%;   width:23%; }  /* balanza sobre "Pesar" */
+  .scene[data-mode="volume"] .eq-mid  { left:39%; top:29%;   width:23%; }  /* balanza sobre "Pesaje" */
+  .scene[data-mode="volume"] .eq-right{ left:72%; top:28.5%; width:23%; }  /* matraz sobre "Volumen" */
 
   /* ---- Píldoras ---- */
   .pill{
@@ -102,7 +102,7 @@
   }
   .pill-input{
     flex:1 1 auto;
-    min-width:2.4em;
+    min-width:3.3em;
     width:100%;
     border:0;
     border-radius:999px;
@@ -135,6 +135,8 @@
     background-position:right .5em center;
   }
   .pill-unit option{ color:var(--ink); }
+  /* unidad fija (no desplegable): sin flecha */
+  span.pill-unit{ background-image:none; padding-left:.6em; padding-right:.6em; }
 
   .pill-value{
     flex:1 1 auto;
@@ -160,9 +162,9 @@
   /* Fila inferior: dato (centro) + resultado (derecha, más corta).
      Centradas en vertical respecto al bloque PM+Pureza. Cambian de
      lugar y de rol según el modo. */
-  .scene[data-mode="mass"]   #pill-vol  { left:36%; top:75.5%; width:29%; }
+  .scene[data-mode="mass"]   #pill-vol  { left:35%; top:75.5%; width:31%; }
   .scene[data-mode="mass"]   #pill-mass { left:70%; top:75.5%; width:28%; }
-  .scene[data-mode="volume"] #pill-mass { left:36%; top:75.5%; width:29%; }
+  .scene[data-mode="volume"] #pill-mass { left:35%; top:75.5%; width:31%; }
   .scene[data-mode="volume"] #pill-vol  { left:70%; top:75.5%; width:28%; }
 
   .pill.is-result{
@@ -294,7 +296,7 @@
   </div>
 
   <div class="pill io" id="pill-vol">
-    <label class="pill-label" for="vol" id="lbl-vol">Vol. final</label>
+    <label class="pill-label" for="vol" id="lbl-vol">Volumen</label>
     <input class="pill-input" id="vol" inputmode="decimal" autocomplete="off" placeholder="—">
     <select class="pill-unit" id="vol-unit" aria-label="Unidad de volumen">
       <option value="uL">µL</option>
@@ -383,7 +385,7 @@
 
     // pill-vol: dato en modo masa, resultado en modo volumen
     setPillRole(pillVol, volEl, volUnitEl, volOut, !solveVol);
-    lblVol.textContent = solveVol ? "Volumen" : "Vol. final";
+    lblVol.textContent = "Volumen";
     // pill-mass: resultado en modo masa, dato en modo volumen
     setPillRole(pillMass, massEl, massUnitEl, massOut, solveVol);
     lblMass.textContent = solveVol ? "Pesaje" : "Pesar";
@@ -527,8 +529,7 @@
     var H = Math.round(W * ratio);
     canvas.width = W; canvas.height = H;
     var ctx = canvas.getContext("2d");
-    ctx.fillStyle = "#fbf7ee";
-    ctx.fillRect(0, 0, W, H);
+    ctx.clearRect(0, 0, W, H);   // fuera del marco queda transparente (se copia sin fondo)
     if (boardImg.complete && boardImg.naturalWidth) ctx.drawImage(boardImg, 0, 0, W, H);
 
     var padX = W * 0.075, x = padX, y = H * 0.135;
