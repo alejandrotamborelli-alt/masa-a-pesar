@@ -174,21 +174,35 @@
   .pill.is-result .pill-label{ }
   .pill.is-result:focus-visible{ outline:.16em solid #ffd27a; outline-offset:.1em; }
 
-  /* Título = botón para cambiar de modo */
+  /* Título = menú desplegable para elegir qué calcular.
+     Mismo tamaño que las píldoras de arriba; letra ~2 pt más grande y en MAYÚSCULA. */
   #pill-title{
-    left:22%; top:2.6%; width:56%;
-    justify-content:center;
-    background:linear-gradient(180deg,#c33a2a,#7f1d13);
-    cursor:pointer;
-    padding:.55em .7em;
-  }
-  #pill-title .pill-label{
-    font-size:1.02em;
+    position:absolute;
+    z-index:2;
+    left:28%; top:2.6%; width:44%;
+    appearance:none; -webkit-appearance:none;
+    border:0.09em solid var(--pill-edge);
+    border-radius:999px;
+    color:#fff;
+    font-family:"Fredoka","Trebuchet MS",sans-serif;
     font-weight:700;
-    padding:0;
-    letter-spacing:.005em;
+    font-size:.68em;
+    text-transform:uppercase;
+    letter-spacing:.01em;
+    text-align:center;
+    text-align-last:center;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    padding:.5em 1.7em;
+    cursor:pointer;
+    text-shadow:0 .06em .08em rgba(0,0,0,.4);
+    box-shadow:0 .18em .5em rgba(0,0,0,.28), inset 0 .06em 0 rgba(255,255,255,.28);
+    background:
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none' stroke='white' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M1 1.5 6 6.5 11 1.5'/></svg>") no-repeat right 1em center,
+      linear-gradient(180deg,#c33a2a,#7f1d13);
   }
-  #pill-title .caret{ font-size:.7em; margin-left:.5em; opacity:.9; }
+  #pill-title option{ text-transform:uppercase; color:var(--ink); font-weight:600; }
   #pill-title:focus-visible{ outline:.16em solid #ffd27a; outline-offset:.12em; }
 
   .pill.shake{ animation:shake .35s ease; }
@@ -260,9 +274,10 @@
   <img class="eq eq-mid" id="eq-mid" src="assets/matraz.png" alt="" aria-hidden="true">
   <img class="eq eq-right" id="eq-right" src="assets/balanza.png" alt="" aria-hidden="true">
 
-  <button type="button" class="pill" id="pill-title" aria-label="Cambiar entre calcular masa o volumen">
-    <span class="pill-label" id="title-text">Masa a pesar</span><span class="caret" aria-hidden="true">▾</span>
-  </button>
+  <select id="pill-title" aria-label="Elegí qué querés calcular">
+    <option value="mass" selected>Masa a pesar</option>
+    <option value="volume">Volumen necesario</option>
+  </select>
 
   <div class="pill" id="pill-compuesto">
     <label class="pill-label" for="compuesto">Compuesto</label>
@@ -337,7 +352,7 @@
   var compuestoEl = $("compuesto");
   var pillVol = $("pill-vol"), pillMass = $("pill-mass");
   var lblVol = $("lbl-vol"), lblMass = $("lbl-mass");
-  var titleText = $("title-text");
+  var titleSel = $("pill-title");
   var eqMid = $("eq-mid"), eqRight = $("eq-right");
 
   var VOL_TO_L  = { L: 1, mL: 1e-3, uL: 1e-6 };
@@ -377,7 +392,7 @@
   function applyMode() {
     scene.setAttribute("data-mode", mode);
     var solveVol = mode === "volume";
-    titleText.textContent = solveVol ? "Volumen necesario" : "Masa a pesar";
+    titleSel.value = mode;
 
     // equipos: frasco (izq, fijo) · medio · derecha
     eqMid.src   = solveVol ? "assets/balanza.png" : "assets/matraz.png";
@@ -481,7 +496,6 @@
       }
       scaled = scaleVol(vL2);
       if (scaled.unit !== "L") lines.unshift("= " + fmt(vL2) + " L");
-      lines.push("Disolvé la masa y enrasá hasta este volumen final.");
       headline = "Para " + fmt(m) + " " + LBL[massUnitEl.value] + "  →  " + fmt(scaled.val) + " " + scaled.unit;
     }
 
@@ -619,8 +633,8 @@
   });
 
   /* ---------------- Modo ---------------- */
-  $("pill-title").addEventListener("click", function () {
-    mode = mode === "mass" ? "volume" : "mass";
+  titleSel.addEventListener("change", function () {
+    mode = titleSel.value;
     applyMode();
   });
 
