@@ -27,10 +27,21 @@
 
   *{box-sizing:border-box}
   [hidden]{display:none!important}
-  html{-webkit-text-size-adjust:100%}
+  html{
+    -webkit-text-size-adjust:100%;
+    overflow:hidden;
+    overscroll-behavior:none;
+  }
+  /* La escena entra siempre en pantalla, así que fijamos el body al viewport:
+     no hay rebote/scroll vertical al arrastrar con el dedo o el Pencil.
+     El zoom con dos dedos y el paneo mientras hay zoom siguen funcionando
+     (los maneja el navegador por encima de esto). */
   body{
     margin:0;
-    min-height:100vh;
+    position:fixed;
+    inset:0;
+    overflow:hidden;
+    overscroll-behavior:none;
     display:flex;
     align-items:center;
     justify-content:center;
