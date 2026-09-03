@@ -171,11 +171,13 @@
   .pill.is-result .pill-label{ }
   .pill.is-result:focus-visible{ outline:.16em solid #ffd27a; outline-offset:.1em; }
 
-  /* Título: mismo tamaño que las píldoras de arriba; MAYÚSCULA y ~2 pt más grande. */
+  /* Título = menú de sección (por ahora solo "Soluciones"; después "Diluciones").
+     Mismo tamaño que las píldoras de arriba; MAYÚSCULA y ~2 pt más grande. */
   #pill-title{
     position:absolute;
     z-index:2;
     left:28%; top:2.6%; width:44%;
+    appearance:none; -webkit-appearance:none;
     border:0.09em solid var(--pill-edge);
     border-radius:999px;
     color:#fff;
@@ -185,14 +187,20 @@
     text-transform:uppercase;
     letter-spacing:.02em;
     text-align:center;
+    text-align-last:center;
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
-    padding:.5em 1em;
+    padding:.5em 1.7em;
+    cursor:pointer;
     text-shadow:0 .06em .08em rgba(0,0,0,.4);
     box-shadow:0 .18em .5em rgba(0,0,0,.28), inset 0 .06em 0 rgba(255,255,255,.28);
-    background:linear-gradient(180deg,#c33a2a,#7f1d13);
+    background:
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none' stroke='white' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M1 1.5 6 6.5 11 1.5'/></svg>") no-repeat right 1em center,
+      linear-gradient(180deg,#c33a2a,#7f1d13);
   }
+  #pill-title option{ text-transform:uppercase; color:var(--ink); font-weight:600; }
+  #pill-title:focus-visible{ outline:.16em solid #ffd27a; outline-offset:.12em; }
 
   .pill.shake{ animation:shake .35s ease; }
   @keyframes shake{
@@ -263,7 +271,9 @@
   <img class="eq eq-mid" src="assets/matraz.png" alt="" aria-hidden="true">
   <img class="eq eq-right" src="assets/balanza.png" alt="" aria-hidden="true">
 
-  <div id="pill-title">Masa a pesar</div>
+  <select id="pill-title" aria-label="Elegí la sección">
+    <option value="soluciones" selected>Soluciones</option>
+  </select>
 
   <div class="pill" id="pill-compuesto">
     <label class="pill-label" for="compuesto">Compuesto</label>
@@ -347,6 +357,7 @@
   var pesadoEl = $("pesado"), pesadoUnitEl = $("pesado-unit");
   var pesarOut = $("pesar-out"), vol2Out = $("vol2-out");
   var pillPesar = $("pill-pesar"), pillVol2 = $("pill-vol2");
+  var titleSel = $("pill-title");
 
   var VOL_TO_L  = { L: 1, mL: 1e-3, uL: 1e-6 };
   var CONC_TO_M = { M: 1, mM: 1e-3, uM: 1e-6 };
@@ -613,6 +624,12 @@
   }
   wireResult(pillPesar, function () { return lastPesar; });
   wireResult(pillVol2,  function () { return lastVol2; });
+
+  // Menú de sección. Por ahora solo "Soluciones"; cuando exista la página de
+  // diluciones, agregar <option value="diluciones"> y navegar acá:
+  titleSel.addEventListener("change", function () {
+    // if (titleSel.value === "diluciones") location.href = "diluciones.html";
+  });
 
   [pmEl, purEl, concEl, compuestoEl, volfinalEl, pesadoEl].forEach(function (el) {
     el.addEventListener("input", calc);
