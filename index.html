@@ -71,10 +71,8 @@
   /* Los tres comparten caja (mismo top y ancho) => arrancan y terminan a la
      misma altura. Cada uno centrado sobre su píldora inferior. */
   .eq-frasco{ left:5%;  top:28%;   width:23%; }
-  .scene[data-mode="mass"]   .eq-mid  { left:39%; top:28.5%; width:23%; }  /* matraz sobre "Volumen" */
-  .scene[data-mode="mass"]   .eq-right{ left:72%; top:29%;   width:23%; }  /* balanza sobre "Pesar" */
-  .scene[data-mode="volume"] .eq-mid  { left:39%; top:29%;   width:23%; }  /* balanza sobre "Pesaje" */
-  .scene[data-mode="volume"] .eq-right{ left:72%; top:28.5%; width:23%; }  /* matraz sobre "Volumen" */
+  .eq-mid   { left:39%; top:28.5%; width:23%; }  /* matraz, sobre la columna "Volumen" */
+  .eq-right { left:72%; top:29%;   width:23%; }  /* balanza, sobre la columna de masa */
 
   /* ---- Píldoras ---- */
   .pill{
@@ -154,18 +152,17 @@
   }
 
   /* Posiciones fijas */
-  #pill-compuesto{ left:2%;  top:14%; width:43%; }
-  #pill-conc{      left:54%; top:14%; width:44%; }
-  #pill-pm{        left:1.5%; top:70%; width:30%; }
-  #pill-pureza{    left:1.5%; top:81%; width:30%; }
+  #pill-compuesto{ left:2%;   top:14%;   width:43%; }
+  #pill-conc{      left:54%;  top:14%;   width:44%; }
 
-  /* Fila inferior: dato (centro) + resultado (derecha, más corta).
-     Centradas en vertical respecto al bloque PM+Pureza. Cambian de
-     lugar y de rol según el modo. */
-  .scene[data-mode="mass"]   #pill-vol  { left:35%; top:75.5%; width:31%; }
-  .scene[data-mode="mass"]   #pill-mass { left:70%; top:75.5%; width:28%; }
-  .scene[data-mode="volume"] #pill-mass { left:35%; top:75.5%; width:31%; }
-  .scene[data-mode="volume"] #pill-vol  { left:70%; top:75.5%; width:28%; }
+  /* Fila 1: PM | Volumen final (dato) | Pesar (resultado, azul) */
+  #pill-pm{        left:1.5%; top:70%;   width:30%; }
+  #pill-volfinal{  left:35%;  top:70%;   width:31%; }
+  #pill-pesar{     left:70%;  top:70%;   width:28%; }
+  /* Fila 2: Pureza | Volumen (resultado, azul) | Pesado (dato) */
+  #pill-pureza{    left:1.5%; top:81.5%; width:30%; }
+  #pill-vol2{      left:35%;  top:81.5%; width:31%; }
+  #pill-pesado{    left:70%;  top:81.5%; width:28%; }
 
   .pill.is-result{
     background:linear-gradient(180deg,var(--pill-blue-1),var(--pill-blue-2));
@@ -174,13 +171,11 @@
   .pill.is-result .pill-label{ }
   .pill.is-result:focus-visible{ outline:.16em solid #ffd27a; outline-offset:.1em; }
 
-  /* Título = menú desplegable para elegir qué calcular.
-     Mismo tamaño que las píldoras de arriba; letra ~2 pt más grande y en MAYÚSCULA. */
+  /* Título: mismo tamaño que las píldoras de arriba; MAYÚSCULA y ~2 pt más grande. */
   #pill-title{
     position:absolute;
     z-index:2;
     left:28%; top:2.6%; width:44%;
-    appearance:none; -webkit-appearance:none;
     border:0.09em solid var(--pill-edge);
     border-radius:999px;
     color:#fff;
@@ -188,22 +183,16 @@
     font-weight:700;
     font-size:.68em;
     text-transform:uppercase;
-    letter-spacing:.01em;
+    letter-spacing:.02em;
     text-align:center;
-    text-align-last:center;
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
-    padding:.5em 1.7em;
-    cursor:pointer;
+    padding:.5em 1em;
     text-shadow:0 .06em .08em rgba(0,0,0,.4);
     box-shadow:0 .18em .5em rgba(0,0,0,.28), inset 0 .06em 0 rgba(255,255,255,.28);
-    background:
-      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none' stroke='white' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M1 1.5 6 6.5 11 1.5'/></svg>") no-repeat right 1em center,
-      linear-gradient(180deg,#c33a2a,#7f1d13);
+    background:linear-gradient(180deg,#c33a2a,#7f1d13);
   }
-  #pill-title option{ text-transform:uppercase; color:var(--ink); font-weight:600; }
-  #pill-title:focus-visible{ outline:.16em solid #ffd27a; outline-offset:.12em; }
 
   .pill.shake{ animation:shake .35s ease; }
   @keyframes shake{
@@ -269,15 +258,12 @@
   }
 </style>
 
-<div class="scene" id="scene" data-mode="mass">
+<div class="scene" id="scene">
   <img class="eq eq-frasco" src="assets/frasco.png" alt="" aria-hidden="true">
-  <img class="eq eq-mid" id="eq-mid" src="assets/matraz.png" alt="" aria-hidden="true">
-  <img class="eq eq-right" id="eq-right" src="assets/balanza.png" alt="" aria-hidden="true">
+  <img class="eq eq-mid" src="assets/matraz.png" alt="" aria-hidden="true">
+  <img class="eq eq-right" src="assets/balanza.png" alt="" aria-hidden="true">
 
-  <select id="pill-title" aria-label="Elegí qué querés calcular">
-    <option value="mass" selected>Masa a pesar</option>
-    <option value="volume">Volumen necesario</option>
-  </select>
+  <div id="pill-title">Masa a pesar</div>
 
   <div class="pill" id="pill-compuesto">
     <label class="pill-label" for="compuesto">Compuesto</label>
@@ -310,26 +296,36 @@
     <span class="pill-unit" style="pointer-events:none">%</span>
   </div>
 
-  <div class="pill io" id="pill-vol">
-    <label class="pill-label" for="vol" id="lbl-vol">Volumen</label>
-    <input class="pill-input" id="vol" inputmode="decimal" autocomplete="off" placeholder="—">
-    <select class="pill-unit" id="vol-unit" aria-label="Unidad de volumen">
+  <!-- Fila 1: querés preparar tanto volumen -> cuánto pesar -->
+  <div class="pill" id="pill-volfinal">
+    <label class="pill-label" for="volfinal">Volumen</label>
+    <input class="pill-input" id="volfinal" inputmode="decimal" autocomplete="off" placeholder="—">
+    <select class="pill-unit" id="volfinal-unit" aria-label="Unidad del volumen a preparar">
       <option value="uL">µL</option>
       <option value="mL" selected>mL</option>
       <option value="L">L</option>
     </select>
-    <span class="pill-value" id="vol-out" hidden></span>
   </div>
 
-  <div class="pill io" id="pill-mass">
-    <label class="pill-label" for="mass" id="lbl-mass">Pesar</label>
-    <input class="pill-input" id="mass" inputmode="decimal" autocomplete="off" placeholder="—">
-    <select class="pill-unit" id="mass-unit" aria-label="Unidad de masa">
+  <div class="pill is-result" id="pill-pesar" role="button" tabindex="0" aria-label="Masa a pesar (tocá para ver el cálculo)">
+    <span class="pill-label">Pesar</span>
+    <span class="pill-value" id="pesar-out">—</span>
+  </div>
+
+  <!-- Fila 2: pesaste realmente esto -> a qué volumen llevarlo -->
+  <div class="pill is-result" id="pill-vol2" role="button" tabindex="0" aria-label="Volumen a usar (tocá para ver el cálculo)">
+    <span class="pill-label">Volumen</span>
+    <span class="pill-value" id="vol2-out">—</span>
+  </div>
+
+  <div class="pill" id="pill-pesado">
+    <label class="pill-label" for="pesado">Pesado</label>
+    <input class="pill-input" id="pesado" inputmode="decimal" autocomplete="off" placeholder="—">
+    <select class="pill-unit" id="pesado-unit" aria-label="Unidad de lo que pesaste">
       <option value="ug">µg</option>
       <option value="mg" selected>mg</option>
       <option value="g">g</option>
     </select>
-    <span class="pill-value" id="mass-out" hidden></span>
   </div>
 </div>
 
@@ -342,18 +338,15 @@
 <script>
 (function () {
   var $ = function (id) { return document.getElementById(id); };
-  var scene = $("scene");
 
   var pmEl = $("pm"), pmUnitEl = $("pm-unit");
   var purEl = $("pureza");
   var concEl = $("conc"), concUnitEl = $("conc-unit");
-  var volEl = $("vol"), volUnitEl = $("vol-unit"), volOut = $("vol-out");
-  var massEl = $("mass"), massUnitEl = $("mass-unit"), massOut = $("mass-out");
   var compuestoEl = $("compuesto");
-  var pillVol = $("pill-vol"), pillMass = $("pill-mass");
-  var lblVol = $("lbl-vol"), lblMass = $("lbl-mass");
-  var titleSel = $("pill-title");
-  var eqMid = $("eq-mid"), eqRight = $("eq-right");
+  var volfinalEl = $("volfinal"), volfinalUnitEl = $("volfinal-unit");
+  var pesadoEl = $("pesado"), pesadoUnitEl = $("pesado-unit");
+  var pesarOut = $("pesar-out"), vol2Out = $("vol2-out");
+  var pillPesar = $("pill-pesar"), pillVol2 = $("pill-vol2");
 
   var VOL_TO_L  = { L: 1, mL: 1e-3, uL: 1e-6 };
   var CONC_TO_M = { M: 1, mM: 1e-3, uM: 1e-6 };
@@ -361,8 +354,8 @@
   var PM_TO_GMOL = { "g/mol": 1, "kg/mol": 1000 };
   var LBL = { M: "M", mM: "mM", uM: "µM", ppm: "ppm", L: "L", mL: "mL", uL: "µL", g: "g", mg: "mg", ug: "µg" };
 
-  var mode = "mass";                 // "mass" = calcular masa | "volume" = calcular volumen
-  var last = { ok: false };          // último cálculo válido
+  var lastPesar = { ok: false };     // fila 1: volumen a preparar -> masa a pesar
+  var lastVol2  = { ok: false };     // fila 2: masa realmente pesada -> volumen a usar
 
   function num(el) {
     if (!el.value) return NaN;
@@ -389,48 +382,9 @@
     return { val: l * 1e6, unit: "µL" };
   }
 
-  function applyMode() {
-    scene.setAttribute("data-mode", mode);
-    var solveVol = mode === "volume";
-    titleSel.value = mode;
-
-    // equipos: frasco (izq, fijo) · medio · derecha
-    eqMid.src   = solveVol ? "assets/balanza.png" : "assets/matraz.png";
-    eqRight.src = solveVol ? "assets/matraz.png"  : "assets/balanza.png";
-
-    // pill-vol: dato en modo masa, resultado en modo volumen
-    setPillRole(pillVol, volEl, volUnitEl, volOut, !solveVol);
-    lblVol.textContent = "Volumen";
-    // pill-mass: resultado en modo masa, dato en modo volumen
-    setPillRole(pillMass, massEl, massUnitEl, massOut, solveVol);
-    lblMass.textContent = solveVol ? "Pesaje" : "Pesar";
-
-    calc();
-  }
-
-  function setPillRole(pill, input, unitSel, outSpan, isInput) {
-    if (isInput) {
-      pill.classList.remove("is-result");
-      pill.removeAttribute("role"); pill.removeAttribute("tabindex");
-      input.hidden = false; unitSel.hidden = false; outSpan.hidden = true;
-    } else {
-      pill.classList.add("is-result");
-      pill.setAttribute("role", "button"); pill.setAttribute("tabindex", "0");
-      input.hidden = true; unitSel.hidden = true; outSpan.hidden = false;
-    }
-  }
-
-  function showResult(scaled) {
-    var span = mode === "mass" ? massOut : volOut;
-    span.textContent = fmt(scaled.val) + " " + scaled.unit;
-  }
-  function clearResult(msg) {
-    var span = mode === "mass" ? massOut : volOut;
-    span.textContent = msg || "—";
-    last = { ok: false };
-  }
-
-  function calc() {
+  // Datos compartidos por las dos filas (PM, concentración, pureza, compuesto).
+  // Devuelve null si falta algo esencial, {bad:"..."} si un valor está fuera de rango.
+  function sharedCtx() {
     var pmRaw = num(pmEl);
     var pm = isNaN(pmRaw) ? NaN : pmRaw * PM_TO_GMOL[pmUnitEl.value];
     var c = num(concEl);
@@ -438,77 +392,106 @@
     var isPpm = concUnit === "ppm";
     var needPm = !isPpm;
 
-    if (isNaN(c) || (needPm && isNaN(pm))) { clearResult("—"); return; }
-    if (c <= 0 || (needPm && pm <= 0)) { clearResult("—"); return; }
+    if (isNaN(c) || (needPm && isNaN(pm))) return null;
+    if (c <= 0 || (needPm && pm <= 0)) return null;
 
     var pur = num(purEl);
     var purityFrac = 1;
     if (!isNaN(pur)) {
-      if (pur <= 0 || pur > 100) { clearResult("pureza 0–100"); return; }
+      if (pur <= 0 || pur > 100) return { bad: "pureza 0–100" };
       purityFrac = pur / 100;
     }
-    var corrige = purityFrac < 1;
 
     var molL = isPpm ? null : c * CONC_TO_M[concUnit];
-    var lines = [];
-    if (!isPpm && concUnit !== "M") {
-      lines.push("C = " + fmt(c) + " " + LBL[concUnit] + " = " + fmt(molL, 6) + " mol/L");
-    }
     var compuesto = compuestoEl.value.trim();
-    var headline, scaled;
-
-    if (mode === "mass") {
-      var v = num(volEl);
-      if (isNaN(v) || v <= 0) { clearResult("—"); return; }
-      var vL = v * (VOL_TO_L[volUnitEl.value] || 1e-3);
-      var mLbl = corrige ? "m(puro)" : "m";
-      var gramsPure, nMmol = null;
-      if (isPpm) {
-        gramsPure = c * vL / 1000;
-        lines.push(mLbl + " = C · V = " + fmt(c) + " mg/L · " + fmt(vL) + " L = " + fmt(c * vL) + " mg");
-        if (!isNaN(pm) && pm > 0) lines.push("≈ " + fmt(c / pm) + " mM  (con PM = " + fmt(pm) + " g/mol)");
-      } else {
-        gramsPure = pm * molL * vL;
-        nMmol = molL * vL * 1000;
-        lines.push(mLbl + " = PM · C · V = " + fmt(pm) + " g/mol · " + fmt(molL, 6) + " mol/L · " + fmt(vL) + " L = " + fmt(gramsPure) + " g");
-      }
-      var grams = gramsPure / purityFrac;
-      if (corrige) lines.push("Pureza " + fmt(pur) + " % → m = " + fmt(gramsPure) + " g / " + fmt(purityFrac) + " = " + fmt(grams) + " g");
-      if (nMmol !== null) lines.push("Cantidad de sustancia: n = " + fmt(nMmol) + " mmol");
-      scaled = scaleMass(grams);
-      if (scaled.unit !== "g") lines.unshift("= " + fmt(grams) + " g");
-      headline = "Para " + fmt(v) + " " + LBL[volUnitEl.value] + "  →  " + fmt(scaled.val) + " " + scaled.unit;
-    } else {
-      var m = num(massEl);
-      if (isNaN(m) || m <= 0) { clearResult("—"); return; }
-      var massG = m * MASS_TO_G[massUnitEl.value];
-      var massPure = massG * purityFrac;
-      var mLbl2 = corrige ? "m(puro)" : "m";
-      if (corrige) lines.push("Pureza " + fmt(pur) + " % → m(puro) = " + fmt(massG) + " g · " + fmt(purityFrac) + " = " + fmt(massPure) + " g");
-      var vL2;
-      if (isPpm) {
-        vL2 = massPure * 1000 / c;
-        lines.push("V = " + mLbl2 + " / C = " + fmt(massPure * 1000) + " mg / " + fmt(c) + " mg/L = " + fmt(vL2) + " L");
-      } else {
-        vL2 = massPure / (pm * molL);
-        lines.push("V = " + mLbl2 + " / (PM · C) = " + fmt(massPure) + " g / (" + fmt(pm) + " g/mol · " + fmt(molL, 6) + " mol/L) = " + fmt(vL2) + " L");
-        lines.push("Cantidad de sustancia: n = " + fmt(massPure / pm * 1000) + " mmol");
-      }
-      scaled = scaleVol(vL2);
-      if (scaled.unit !== "L") lines.unshift("= " + fmt(vL2) + " L");
-      headline = "Para " + fmt(m) + " " + LBL[massUnitEl.value] + "  →  " + fmt(scaled.val) + " " + scaled.unit;
-    }
-
     var titulo = fmt(c) + " " + LBL[concUnit];
     if (compuesto) titulo = compuesto + " " + titulo;
 
-    showResult(scaled);
-    last = {
-      ok: true,
-      title: titulo,
-      headline: headline,
+    return {
+      pm: pm, c: c, concUnit: concUnit, isPpm: isPpm,
+      pur: pur, purityFrac: purityFrac, corrige: purityFrac < 1,
+      molL: molL, titulo: titulo
+    };
+  }
+
+  function baseLines(s) {
+    var lines = [];
+    if (!s.isPpm && s.concUnit !== "M") {
+      lines.push("C = " + fmt(s.c) + " " + LBL[s.concUnit] + " = " + fmt(s.molL, 6) + " mol/L");
+    }
+    return lines;
+  }
+
+  // Fila 1: querés preparar V de solución  ->  cuánto pesar
+  function calcPesar(s) {
+    var v = num(volfinalEl);
+    if (isNaN(v) || v <= 0) return null;
+    var vL = v * (VOL_TO_L[volfinalUnitEl.value] || 1e-3);
+    var lines = baseLines(s);
+    var mLbl = s.corrige ? "m(puro)" : "m";
+    var gramsPure, nMmol = null;
+    if (s.isPpm) {
+      gramsPure = s.c * vL / 1000;
+      lines.push(mLbl + " = C · V = " + fmt(s.c) + " mg/L · " + fmt(vL) + " L = " + fmt(s.c * vL) + " mg");
+      if (!isNaN(s.pm) && s.pm > 0) lines.push("≈ " + fmt(s.c / s.pm) + " mM  (con PM = " + fmt(s.pm) + " g/mol)");
+    } else {
+      gramsPure = s.pm * s.molL * vL;
+      nMmol = s.molL * vL * 1000;
+      lines.push(mLbl + " = PM · C · V = " + fmt(s.pm) + " g/mol · " + fmt(s.molL, 6) + " mol/L · " + fmt(vL) + " L = " + fmt(gramsPure) + " g");
+    }
+    var grams = gramsPure / s.purityFrac;
+    if (s.corrige) lines.push("Pureza " + fmt(s.pur) + " % → m = " + fmt(gramsPure) + " g / " + fmt(s.purityFrac) + " = " + fmt(grams) + " g");
+    if (nMmol !== null) lines.push("Cantidad de sustancia: n = " + fmt(nMmol) + " mmol");
+    var scaled = scaleMass(grams);
+    if (scaled.unit !== "g") lines.unshift("= " + fmt(grams) + " g");
+    return {
+      ok: true, title: s.titulo,
+      out: fmt(scaled.val) + " " + scaled.unit,
+      headline: "Para " + fmt(v) + " " + LBL[volfinalUnitEl.value] + "  →  " + fmt(scaled.val) + " " + scaled.unit,
       lines: lines
     };
+  }
+
+  // Fila 2: pesaste realmente M  ->  a qué volumen llevarlo
+  function calcVol2(s) {
+    var m = num(pesadoEl);
+    if (isNaN(m) || m <= 0) return null;
+    var massG = m * MASS_TO_G[pesadoUnitEl.value];
+    var massPure = massG * s.purityFrac;
+    var lines = baseLines(s);
+    var mLbl = s.corrige ? "m(puro)" : "m";
+    if (s.corrige) lines.push("Pureza " + fmt(s.pur) + " % → m(puro) = " + fmt(massG) + " g · " + fmt(s.purityFrac) + " = " + fmt(massPure) + " g");
+    var vL2;
+    if (s.isPpm) {
+      vL2 = massPure * 1000 / s.c;
+      lines.push("V = " + mLbl + " / C = " + fmt(massPure * 1000) + " mg / " + fmt(s.c) + " mg/L = " + fmt(vL2) + " L");
+    } else {
+      vL2 = massPure / (s.pm * s.molL);
+      lines.push("V = " + mLbl + " / (PM · C) = " + fmt(massPure) + " g / (" + fmt(s.pm) + " g/mol · " + fmt(s.molL, 6) + " mol/L) = " + fmt(vL2) + " L");
+      lines.push("Cantidad de sustancia: n = " + fmt(massPure / s.pm * 1000) + " mmol");
+    }
+    var scaled = scaleVol(vL2);
+    if (scaled.unit !== "L") lines.unshift("= " + fmt(vL2) + " L");
+    return {
+      ok: true, title: s.titulo,
+      out: fmt(scaled.val) + " " + scaled.unit,
+      headline: "Para " + fmt(m) + " " + LBL[pesadoUnitEl.value] + "  →  " + fmt(scaled.val) + " " + scaled.unit,
+      lines: lines
+    };
+  }
+
+  function calc() {
+    var s = sharedCtx();
+    var badMsg = s && s.bad ? s.bad : "—";
+    var ready = s && !s.bad;
+
+    var r1 = ready ? calcPesar(s) : null;
+    lastPesar = r1 || { ok: false };
+    pesarOut.textContent = r1 ? r1.out : badMsg;
+
+    var r2 = ready ? calcVol2(s) : null;
+    lastVol2 = r2 || { ok: false };
+    vol2Out.textContent = r2 ? r2.out : badMsg;
   }
 
   /* ---------------- Pizarra ---------------- */
@@ -538,7 +521,7 @@
     return y;
   }
 
-  function paintBoard() {
+  function paintBoard(data) {
     var W = 1600;
     var ratio = (boardImg.naturalHeight && boardImg.naturalWidth)
       ? boardImg.naturalHeight / boardImg.naturalWidth : 0.563;
@@ -555,31 +538,30 @@
     ctx.fillStyle = "#9c1f1f";
     var tFont = Math.round(H * 0.12);
     ctx.font = '700 ' + tFont + 'px "Caveat", cursive';
-    var tW = ctx.measureText(last.title).width;
+    var tW = ctx.measureText(data.title).width;
     if (tW > maxW) {
       tFont = Math.floor(tFont * maxW / tW);
       ctx.font = '700 ' + tFont + 'px "Caveat", cursive';
     }
     ctx.textAlign = "center";
-    ctx.fillText(last.title, W / 2, y);
+    ctx.fillText(data.title, W / 2, y);
     ctx.textAlign = "left";
     y += H * 0.16;
 
     ctx.fillStyle = "#33302b";
     ctx.font = '600 ' + Math.round(H * 0.088) + 'px "Caveat", cursive';
-    y = wrap(ctx, last.headline, x, y, maxW, H * 0.1);
+    y = wrap(ctx, data.headline, x, y, maxW, H * 0.1);
     y += H * 0.03;
 
     ctx.font = '500 ' + Math.round(H * 0.058) + 'px "Caveat", cursive';
-    for (var i = 0; i < last.lines.length; i++) {
-      y = wrap(ctx, last.lines[i], x, y, maxW, H * 0.072);
+    for (var i = 0; i < data.lines.length; i++) {
+      y = wrap(ctx, data.lines[i], x, y, maxW, H * 0.072);
     }
   }
 
-  function openBoard() {
-    if (!last.ok) {
-      var p = mode === "mass" ? pillMass : pillVol;
-      p.classList.remove("shake"); void p.offsetWidth; p.classList.add("shake");
+  function openBoard(data, pill) {
+    if (!data || !data.ok) {
+      pill.classList.remove("shake"); void pill.offsetWidth; pill.classList.add("shake");
       return;
     }
     Promise.all([
@@ -587,7 +569,7 @@
       document.fonts.load('600 80px "Caveat"'),
       document.fonts.load('500 80px "Caveat"')
     ]).catch(function () {}).then(function () {
-      paintBoard();
+      paintBoard(data);
       board.hidden = false;
       document.documentElement.style.overflow = "hidden";
     });
@@ -623,29 +605,23 @@
     if (e.key === "Escape" && !board.hidden) closeBoard();
   });
 
-  function openResult() { openBoard(); }
-  pillVol.addEventListener("click", function () { if (pillVol.classList.contains("is-result")) openResult(); });
-  pillMass.addEventListener("click", function () { if (pillMass.classList.contains("is-result")) openResult(); });
-  [pillVol, pillMass].forEach(function (p) {
-    p.addEventListener("keydown", function (e) {
-      if (p.classList.contains("is-result") && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); openResult(); }
+  function wireResult(pill, getData) {
+    pill.addEventListener("click", function () { openBoard(getData(), pill); });
+    pill.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openBoard(getData(), pill); }
     });
-  });
+  }
+  wireResult(pillPesar, function () { return lastPesar; });
+  wireResult(pillVol2,  function () { return lastVol2; });
 
-  /* ---------------- Modo ---------------- */
-  titleSel.addEventListener("change", function () {
-    mode = titleSel.value;
-    applyMode();
-  });
-
-  [pmEl, purEl, concEl, volEl, massEl, compuestoEl].forEach(function (el) {
+  [pmEl, purEl, concEl, compuestoEl, volfinalEl, pesadoEl].forEach(function (el) {
     el.addEventListener("input", calc);
   });
-  [pmUnitEl, concUnitEl, volUnitEl, massUnitEl].forEach(function (el) {
+  [pmUnitEl, concUnitEl, volfinalUnitEl, pesadoUnitEl].forEach(function (el) {
     el.addEventListener("change", calc);
   });
 
-  applyMode();
+  calc();
 
   /* ---------------- Offline ---------------- */
   if ("serviceWorker" in navigator && location.protocol.indexOf("http") === 0) {
