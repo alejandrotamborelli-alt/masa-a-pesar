@@ -1,19 +1,24 @@
 # Masa a pesar
 
-Calculadora de laboratorio (una sola página HTML, sin librerías) para preparar
-soluciones. Interfaz visual: escena con fondo químico y equipos de laboratorio,
+Calculadora de laboratorio (HTML sin librerías) para preparar soluciones y
+diluciones. Interfaz visual: escena con fondo químico y equipos de laboratorio,
 campos tipo "píldora" repartidos sobre la escena, que se achica para entrar en
 cualquier pantalla (pensada para iPad).
 
-## Qué hace
+Dos secciones, se cambia con el menú del **título**:
 
-A partir del **peso molecular** y la **concentración final** deseada, despeja lo que falte:
+- **`index.html` — Soluciones**
+- **`diluciones.html` — Diluciones** (diluciones seriadas)
 
-- **Masa a pesar** — dados concentración y volumen final, cuánto sólido pesar.
-- **Volumen necesario** — dada la masa que ya pesaste, a qué volumen final llevarla.
+Estilos comunes en **`app.css`**; cada página deja inline solo sus posiciones.
 
-Se cambia de modo tocando el **título**. Los equipos (frasco / matraz / balanza)
-se reordenan según el modo.
+## Soluciones (index.html)
+
+A partir del **peso molecular** y la **concentración** deseada, en la misma
+pantalla resuelve las dos direcciones:
+
+- **Fila 1**: volumen a preparar → cuánto sólido pesar.
+- **Fila 2**: masa que realmente pesaste → a qué volumen llevarla.
 
 - **Compuesto**: texto libre, solo de referencia (no entra en la cuenta; aparece en la pizarra).
 - **Pureza del reactivo (%)**: opcional; si es menor a 100 corrige la masa
@@ -44,6 +49,23 @@ V = m / (PM · C)            (para ppm: V = m / C[mg/L])
 
 con pureza P (%):  m_a_pesar = m / (P/100)      m_puro = m_pesada · (P/100)
 ```
+
+## Diluciones (diluciones.html)
+
+Diluciones seriadas desde una **madre** hasta una **[Final]** objetivo.
+
+- **Dil. máx 1/N**: máximo factor de dilución por paso (número libre).
+- **Vol. dil.**: volumen de cada tubo.
+- Factor total `DF = [Inicial] / [Final]`. Cada paso usa `1/N`; el último toma el
+  factor que falte para caer justo en `[Final]`
+  (`n = ⌈ln DF / ln N⌉`, `factor_último = DF / N^(n-1)`).
+- Máximo **3** diluciones; si hacen falta más → "no se puede (n)". Si hacen falta
+  menos, se muestran solo esos tubos.
+- `[Inicial]` y `[Final]` tienen que ser de la misma familia de unidades
+  (molar `M/mM/µM` **o** `ppm`, no mezcladas).
+- Cada tarjeta indica cuánto tomar (de la madre o de la dilución anterior) y
+  cuánto solvente agregar. Tocando la tarjeta de la **última** dilución se abre
+  la pizarra.
 
 ## Uso
 
