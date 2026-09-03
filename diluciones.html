@@ -1,0 +1,421 @@
+<title>Diluciones</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Fredoka:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#2f7fc4">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Masa a pesar">
+
+<link rel="stylesheet" href="app.css">
+<style>
+  /* Posiciones propias de la página "Diluciones" */
+  #pill-compuesto{ left:2%;   top:13%; width:30%; }
+  #pill-cini{      left:34%;  top:13%; width:31%; }
+  #pill-cfin{      left:67%;  top:13%; width:31%; }
+  #pill-dmax{      left:2%;   top:24%; width:30%; }
+  #pill-voldil{    left:34%;  top:24%; width:31%; }
+  #pill-ndil{      left:67%;  top:24%; width:31%; }
+
+  .eq-m0{ left:2.5%;  top:37%; width:19%; }
+  .eq-m1{ left:27%;   top:37%; width:19%; }
+  .eq-m2{ left:51.5%; top:37%; width:19%; }
+  .eq-m3{ left:76%;   top:37%; width:19%; }
+
+  .card{
+    position:absolute;
+    z-index:2;
+    border:0.09em solid var(--pill-edge);
+    border-radius:.8em;
+    background:linear-gradient(180deg,var(--pill-blue-1),var(--pill-blue-2));
+    color:#fff;
+    padding:.45em .5em;
+    font-family:"Fredoka","Trebuchet MS",sans-serif;
+    font-weight:500;
+    font-size:.46em;
+    line-height:1.32;
+    text-align:center;
+    box-shadow:0 .18em .5em rgba(0,0,0,.28), inset 0 .06em 0 rgba(255,255,255,.28);
+    text-shadow:0 .06em .08em rgba(0,0,0,.4);
+  }
+  .card span{ display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .card .c-title{ font-weight:700; font-size:1.2em; margin-bottom:.1em; }
+  .card .c-sub{ font-weight:700; color:#e2f2ff; margin-bottom:.1em; }
+  .card.tappable{ cursor:pointer; }
+  .card.tappable .c-title::after{ content:" ▸"; opacity:.8; }
+  .card.tappable:focus-visible{ outline:.16em solid #ffd27a; outline-offset:.12em; }
+
+  #card-madre{ left:1.5%;  top:72%; width:23%; }
+  #card-d1{    left:26%;   top:72%; width:23.5%; }
+  #card-d2{    left:51%;   top:72%; width:23.5%; }
+  #card-d3{    left:75.5%; top:72%; width:23%; }
+</style>
+
+<div class="scene" id="scene">
+  <img class="eq eq-m0" id="eq-m0" src="assets/matraz.png" alt="" aria-hidden="true">
+  <img class="eq eq-m1" id="eq-m1" src="assets/matraz.png" alt="" aria-hidden="true">
+  <img class="eq eq-m2" id="eq-m2" src="assets/matraz.png" alt="" aria-hidden="true">
+  <img class="eq eq-m3" id="eq-m3" src="assets/matraz.png" alt="" aria-hidden="true">
+
+  <select id="pill-title" aria-label="Elegí la sección">
+    <option value="soluciones">Soluciones</option>
+    <option value="diluciones" selected>Diluciones</option>
+  </select>
+
+  <div class="pill" id="pill-compuesto">
+    <label class="pill-label" for="compuesto">Compuesto</label>
+    <input class="pill-input" id="compuesto" type="text" maxlength="40" autocomplete="off" placeholder="opcional">
+  </div>
+
+  <div class="pill" id="pill-cini">
+    <label class="pill-label" for="cini">[Inicial]</label>
+    <input class="pill-input" id="cini" inputmode="decimal" autocomplete="off" placeholder="madre">
+    <select class="pill-unit" id="cini-unit" aria-label="Unidad de la concentración inicial">
+      <option value="M" selected>M</option>
+      <option value="mM">mM</option>
+      <option value="uM">µM</option>
+      <option value="ppm">ppm</option>
+    </select>
+  </div>
+
+  <div class="pill" id="pill-cfin">
+    <label class="pill-label" for="cfin">[Final]</label>
+    <input class="pill-input" id="cfin" inputmode="decimal" autocomplete="off" placeholder="objetivo">
+    <select class="pill-unit" id="cfin-unit" aria-label="Unidad de la concentración final">
+      <option value="M">M</option>
+      <option value="mM">mM</option>
+      <option value="uM" selected>µM</option>
+      <option value="ppm">ppm</option>
+    </select>
+  </div>
+
+  <div class="pill" id="pill-dmax">
+    <label class="pill-label" for="dmax">Dil. máx  1/</label>
+    <input class="pill-input" id="dmax" inputmode="decimal" autocomplete="off" placeholder="10">
+  </div>
+
+  <div class="pill" id="pill-voldil">
+    <label class="pill-label" for="voldil">Vol. dil.</label>
+    <input class="pill-input" id="voldil" inputmode="decimal" autocomplete="off" placeholder="—">
+    <select class="pill-unit" id="voldil-unit" aria-label="Unidad del volumen de cada dilución">
+      <option value="uL">µL</option>
+      <option value="mL" selected>mL</option>
+      <option value="L">L</option>
+    </select>
+  </div>
+
+  <div class="pill is-result" id="pill-ndil">
+    <span class="pill-label">N° dil.</span>
+    <span class="pill-value" id="ndil-out">—</span>
+  </div>
+
+  <div class="card" id="card-madre">
+    <span class="c-title">Madre</span>
+    <span class="c-sub">—</span>
+    <span class="c-l3"></span>
+    <span class="c-l4"></span>
+  </div>
+  <div class="card" id="card-d1" hidden>
+    <span class="c-title">Dilución 1</span>
+    <span class="c-sub">—</span>
+    <span class="c-l3">—</span>
+    <span class="c-l4">—</span>
+  </div>
+  <div class="card" id="card-d2" hidden>
+    <span class="c-title">Dilución 2</span>
+    <span class="c-sub">—</span>
+    <span class="c-l3">—</span>
+    <span class="c-l4">—</span>
+  </div>
+  <div class="card" id="card-d3" hidden>
+    <span class="c-title">Dilución 3</span>
+    <span class="c-sub">—</span>
+    <span class="c-l3">—</span>
+    <span class="c-l4">—</span>
+  </div>
+</div>
+
+<div id="board" hidden>
+  <canvas id="board-canvas"></canvas>
+  <div id="board-hint">Tocá la pizarra para copiarla como imagen · tocá afuera para volver</div>
+</div>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+
+  var compuestoEl = $("compuesto");
+  var ciniEl = $("cini"), ciniUnitEl = $("cini-unit");
+  var cfinEl = $("cfin"), cfinUnitEl = $("cfin-unit");
+  var dmaxEl = $("dmax");
+  var voldilEl = $("voldil"), voldilUnitEl = $("voldil-unit");
+  var ndilOut = $("ndil-out");
+  var titleSel = $("pill-title");
+
+  var eqs   = [$("eq-m0"), $("eq-m1"), $("eq-m2"), $("eq-m3")];
+  var cards = [$("card-madre"), $("card-d1"), $("card-d2"), $("card-d3")];
+
+  var VOL_TO_L  = { L: 1, mL: 1e-3, uL: 1e-6 };
+  var CONC_TO_M = { M: 1, mM: 1e-3, uM: 1e-6 };
+  var LBL = { M: "M", mM: "mM", uM: "µM", ppm: "ppm", L: "L", mL: "mL", uL: "µL" };
+
+  var lastBoard = { ok: false };
+
+  function num(el) {
+    if (!el.value) return NaN;
+    return parseFloat(el.value.replace(",", ".").trim());
+  }
+  function fmt(n, p) {
+    if (n === 0) return "0";
+    if (!isFinite(n)) return "—";
+    var abs = Math.abs(n);
+    if (abs < 1e-4 || abs >= 1e7) return n.toExponential(Math.max(0, (p || 4) - 1));
+    return Number(n.toPrecision(p || 4)).toLocaleString("es-ES", { maximumFractionDigits: 12 });
+  }
+  function scaleVol(l) {
+    var a = Math.abs(l);
+    if (a >= 1) return { val: l, unit: "L" };
+    if (a >= 1e-3) return { val: l * 1e3, unit: "mL" };
+    return { val: l * 1e6, unit: "µL" };
+  }
+  function volTxt(l) {
+    if (l == null || !isFinite(l)) return "?";
+    var s = scaleVol(l);
+    return fmt(s.val) + " " + s.unit;
+  }
+
+  function showN(k) {                 // muestra Madre (0) + k diluciones (índices 1..k)
+    for (var i = 0; i < 4; i++) {
+      var vis = i <= k;
+      eqs[i].hidden = !vis;
+      cards[i].hidden = !vis;
+    }
+  }
+  function setCard(el, title, sub, l3, l4, tappable) {
+    el.querySelector(".c-title").textContent = title;
+    el.querySelector(".c-sub").textContent = sub;
+    el.querySelector(".c-l3").textContent = l3 || "";
+    el.querySelector(".c-l4").textContent = l4 || "";
+    el.classList.toggle("tappable", !!tappable);
+    if (tappable) { el.setAttribute("role", "button"); el.tabIndex = 0; }
+    else { el.removeAttribute("role"); el.removeAttribute("tabindex"); }
+  }
+
+  function calcDil() {
+    var compuesto = compuestoEl.value.trim();
+    var ci = num(ciniEl), ciU = ciniUnitEl.value;
+    var cf = num(cfinEl), cfU = cfinUnitEl.value;
+    var nMax = num(dmaxEl);
+    var Vraw = num(voldilEl), VU = voldilUnitEl.value;
+    var haveV = !isNaN(Vraw) && Vraw > 0;
+    var VL = haveV ? Vraw * VOL_TO_L[VU] : null;
+
+    lastBoard = { ok: false };
+    showN(0);
+    setCard(cards[0], "Madre", compuesto || "—", "", "", false);
+
+    if (isNaN(ci) || isNaN(cf) || ci <= 0 || cf <= 0) { ndilOut.textContent = "—"; return; }
+
+    var DF;
+    if (ciU === cfU) DF = ci / cf;
+    else if (ciU !== "ppm" && cfU !== "ppm") DF = (ci * CONC_TO_M[ciU]) / (cf * CONC_TO_M[cfU]);
+    else { ndilOut.textContent = "misma familia de unidades"; return; }
+
+    if (DF <= 1) { ndilOut.textContent = "[final] ≥ [inicial]"; return; }
+    if (isNaN(nMax) || nMax <= 1) { ndilOut.textContent = "poné dil. máx"; return; }
+
+    var n = Math.ceil(Math.log(DF) / Math.log(nMax) - 1e-9);
+    if (n < 1) n = 1;
+    if (n > 3) { ndilOut.textContent = "no se puede (" + n + ")"; return; }
+
+    ndilOut.textContent = String(n);
+
+    var factors = [];
+    for (var i = 0; i < n; i++) factors.push(i < n - 1 ? nMax : DF / Math.pow(nMax, n - 1));
+
+    setCard(cards[0], "Madre",
+      (compuesto ? compuesto + " · " : "") + fmt(ci) + " " + LBL[ciU],
+      "usás " + volTxt(haveV ? VL / factors[0] : null), "", false);
+
+    showN(n);
+
+    var cum = 1, boardLines = [];
+    for (var k = 0; k < n; k++) {
+      cum *= factors[k];
+      var isLast = k === n - 1;
+      var srcName = k === 0 ? "Madre" : "Dil. " + k;
+      var srcVol = haveV ? VL / factors[k] : null;
+      var restVol = haveV ? VL - srcVol : null;
+      var sub = isLast ? (fmt(cf) + " " + LBL[cfU]) : ("1/" + fmt(cum));
+      setCard(cards[k + 1], "Dilución " + (k + 1), sub,
+        srcName + "  " + volTxt(srcVol),
+        "solvente  " + volTxt(restVol),
+        isLast);
+      boardLines.push("Dil. " + (k + 1) + " (1/" + fmt(factors[k]) + "): " + srcName + " " +
+        volTxt(srcVol) + " + solvente " + volTxt(restVol) + "  →  1/" + fmt(cum) +
+        (isLast ? "  =  " + fmt(cf) + " " + LBL[cfU] : ""));
+    }
+
+    lastBoard = {
+      ok: haveV,
+      title: (compuesto ? compuesto + " " : "") + fmt(cf) + " " + LBL[cfU],
+      headline: "De " + fmt(ci) + " " + LBL[ciU] + "  →  " + fmt(cf) + " " + LBL[cfU] +
+        "   (1/" + fmt(DF) + " total · " + n + (n === 1 ? " dilución)" : " diluciones)"),
+      lines: ["Diluciones seriadas · máx 1/" + fmt(nMax) + " por paso" +
+        (haveV ? " · " + fmt(Vraw) + " " + VU + " por tubo" : " · falta el volumen de cada dilución")]
+        .concat(boardLines)
+        .concat(["El resto de cada tubo se completa con buffer / agua / el solvente que uses."])
+    };
+  }
+
+  /* ---------------- Pizarra ---------------- */
+  var board = $("board"), canvas = $("board-canvas"), toastEl = $("toast");
+  var boardImg = new Image();
+  boardImg.src = "assets/pizarron.png";
+  var toastTimer;
+
+  function toast(msg) {
+    toastEl.textContent = msg;
+    toastEl.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { toastEl.classList.remove("show"); }, 2200);
+  }
+
+  function wrap(ctx, text, x, y, maxW, lh) {
+    var words = text.split(" "), line = "";
+    for (var i = 0; i < words.length; i++) {
+      var test = line ? line + " " + words[i] : words[i];
+      if (ctx.measureText(test).width > maxW && line) {
+        ctx.fillText(line, x, y); y += lh; line = words[i];
+      } else {
+        line = test;
+      }
+    }
+    if (line) { ctx.fillText(line, x, y); y += lh; }
+    return y;
+  }
+
+  function paintBoard(data) {
+    var W = 1600;
+    var ratio = (boardImg.naturalHeight && boardImg.naturalWidth)
+      ? boardImg.naturalHeight / boardImg.naturalWidth : 0.563;
+    var H = Math.round(W * ratio);
+    canvas.width = W; canvas.height = H;
+    var ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, W, H);
+    if (boardImg.complete && boardImg.naturalWidth) ctx.drawImage(boardImg, 0, 0, W, H);
+
+    var padX = W * 0.075, x = padX, y = H * 0.135;
+    var maxW = W - padX * 2;
+    ctx.textBaseline = "top";
+
+    ctx.fillStyle = "#9c1f1f";
+    var tFont = Math.round(H * 0.12);
+    ctx.font = '700 ' + tFont + 'px "Caveat", cursive';
+    var tW = ctx.measureText(data.title).width;
+    if (tW > maxW) {
+      tFont = Math.floor(tFont * maxW / tW);
+      ctx.font = '700 ' + tFont + 'px "Caveat", cursive';
+    }
+    ctx.textAlign = "center";
+    ctx.fillText(data.title, W / 2, y);
+    ctx.textAlign = "left";
+    y += H * 0.16;
+
+    ctx.fillStyle = "#33302b";
+    ctx.font = '600 ' + Math.round(H * 0.082) + 'px "Caveat", cursive';
+    y = wrap(ctx, data.headline, x, y, maxW, H * 0.094);
+    y += H * 0.03;
+
+    ctx.font = '500 ' + Math.round(H * 0.056) + 'px "Caveat", cursive';
+    for (var i = 0; i < data.lines.length; i++) {
+      y = wrap(ctx, data.lines[i], x, y, maxW, H * 0.07);
+    }
+  }
+
+  function openBoard(data, pill) {
+    if (!data || !data.ok) {
+      pill.classList.remove("shake"); void pill.offsetWidth; pill.classList.add("shake");
+      if (data && !data.ok) toast("Completá el volumen de cada dilución");
+      return;
+    }
+    Promise.all([
+      document.fonts.load('700 80px "Caveat"'),
+      document.fonts.load('600 80px "Caveat"'),
+      document.fonts.load('500 80px "Caveat"')
+    ]).catch(function () {}).then(function () {
+      paintBoard(data);
+      board.hidden = false;
+      document.documentElement.style.overflow = "hidden";
+    });
+  }
+  function closeBoard() {
+    board.hidden = true;
+    document.documentElement.style.overflow = "";
+  }
+
+  canvas.addEventListener("click", function (e) {
+    e.stopPropagation();
+    canvas.toBlob(function (blob) {
+      if (!blob) { toast("No se pudo generar la imagen"); return; }
+      if (navigator.clipboard && window.ClipboardItem) {
+        navigator.clipboard.write([new ClipboardItem({ "image/png": blob })])
+          .then(function () { toast("Cálculo copiado ✓  pegalo en tu documento"); })
+          .catch(function () { downloadBlob(blob); });
+      } else {
+        downloadBlob(blob);
+      }
+    }, "image/png");
+  });
+  function downloadBlob(blob) {
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "diluciones.png";
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+    toast("Imagen guardada");
+  }
+  board.addEventListener("click", closeBoard);
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && !board.hidden) closeBoard();
+  });
+
+  [cards[1], cards[2], cards[3]].forEach(function (c) {
+    c.addEventListener("click", function () {
+      if (c.classList.contains("tappable")) openBoard(lastBoard, c);
+    });
+    c.addEventListener("keydown", function (e) {
+      if (c.classList.contains("tappable") && (e.key === "Enter" || e.key === " ")) {
+        e.preventDefault(); openBoard(lastBoard, c);
+      }
+    });
+  });
+
+  titleSel.addEventListener("change", function () {
+    if (titleSel.value === "soluciones") location.href = "index.html";
+  });
+
+  [compuestoEl, ciniEl, cfinEl, dmaxEl, voldilEl].forEach(function (el) {
+    el.addEventListener("input", calcDil);
+  });
+  [ciniUnitEl, cfinUnitEl, voldilUnitEl].forEach(function (el) {
+    el.addEventListener("change", calcDil);
+  });
+
+  calcDil();
+
+  /* ---------------- Offline ---------------- */
+  if ("serviceWorker" in navigator && location.protocol.indexOf("http") === 0) {
+    window.addEventListener("load", function () {
+      navigator.serviceWorker.register("sw.js").catch(function () {});
+    });
+  }
+})();
+</script>

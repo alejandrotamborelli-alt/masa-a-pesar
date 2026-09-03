@@ -4,12 +4,14 @@
  * Ese número es lo único que le avisa al navegador que hay una versión nueva
  * para descargar. Si no cambia, el iPad sigue mostrando la copia vieja.
  */
-const VERSION = 'v12';
+const VERSION = 'v13';
 const CACHE = 'masa-a-pesar-' + VERSION;
 
 const CORE = [
   './',
   './index.html',
+  './diluciones.html',
+  './app.css',
   './manifest.webmanifest',
   './icons/icon-192.png',
   './icons/icon-512.png',
